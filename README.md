@@ -14,7 +14,7 @@ to see that it's very short and not dangerous.
 
 ```sh
 curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
-  | sudo bash
+  | sudo env "PATH=$PATH" bash
 ```
 
 
