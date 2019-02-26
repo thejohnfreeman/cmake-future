@@ -6,7 +6,7 @@ should be included in CMake.
 
 ## Install
 
-### Linux
+### Linux and OSX
 
 You'll need `sudo` to install these extensions in the right place. You can
 read [the script](https://github.com/thejohnfreeman/cmake-future/blob/master/install.sh)
