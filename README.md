@@ -13,7 +13,7 @@ read [the script](https://github.com/thejohnfreeman/cmake-future/blob/master/ins
 to see that it's very short and not dangerous.
 
 ```sh
-curl -Lk https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
+curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
   | sudo bash
 ```
 

@@ -14,7 +14,7 @@ main() {
 
   cd "${work_dir}"
   url=https://github.com/thejohnfreeman/cmake-future/archive/master.tar.gz
-  curl --location --insecure ${url} | tar --strip-components=1 -xzf -
+  curl --location ${url} | tar --strip-components=1 -xzf -
   mkdir build
   cd build
   cmake ..
