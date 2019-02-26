@@ -6,7 +6,9 @@ set -o nounset
 # Put everything in a function so that piping to bash fails gracefully if the
 # download is incomplete.
 main() {
-  work_dir="$(mktemp --directory)"
+  # GNU mktemp (on Linux) has the --directory long option, but BSD mktemp (on
+  # OSX) does not.
+  work_dir="$(mktemp -d)"
   cleanup() {
     rm -rf "${work_dir}"
   }
