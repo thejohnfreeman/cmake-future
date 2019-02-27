@@ -28,12 +28,15 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 
 # Create a meta package named after this project that imports every extension
-# using `find_package`. We build a string that has a `find_package` line for
-# every extension, then we use `configure_file` to write those lines to a new
-# file.
-set(LINES "")
+# using `find_dependency`. We build a string that has a `find_dependency` line
+# for every extension, then we use `configure_file` to write those lines to
+# a new file.
+set(LINES "include(CMakeFindDependencyMacro)\n")
 foreach(PACKAGE_NAME ${PACKAGE_NAMES})
-  string(APPEND LINES "find_package(${PACKAGE_NAME} REQUIRED)\n")
+  # `find_dependency` forwards the arguments from the `find_package` call that
+  # found this package configuration file.
+  # https://cmake.org/cmake/help/latest/module/CMakeFindDependencyMacro.html
+  string(APPEND LINES "find_dependency(${PACKAGE_NAME})\n")
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 configure_file(
   "${PROJECT_NAME}-config.cmake.in"
