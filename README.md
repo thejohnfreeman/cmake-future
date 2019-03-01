@@ -17,6 +17,18 @@ curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/ins
   | sudo env "PATH=$PATH" bash
 ```
 
+### Windows
+
+You'll need Administrator privileges to install these extensions in the right
+place. You can read [the
+script](https://github.com/thejohnfreeman/cmake-future/blob/master/install.ps)
+to see that it's very short and not dangerous.
+
+```powershell
+Invoke-RestMethod https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.ps `
+  | powershell
+```
+
 
 ## Use
 
