@@ -65,5 +65,5 @@ enable_testing()
 
 # Add a test that tries to import all of our extensions.
 add_test(NAME find_packages
-  COMMAND cmake -P "${CMAKE_BINARY_DIR}/CMakeLists.test.txt"
+  COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/CMakeLists.test.txt"
 )
