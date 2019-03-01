@@ -1,0 +1,36 @@
+# https://stackoverflow.com/a/54935264/618906
+function New-TemporaryDirectory {
+  $parent = [System.IO.Path]::GetTempPath()
+  $name = [System.IO.Path]::GetRandomFileName()
+  while ($true) {
+    New-Item -Path $parent -Name $name -ItemType "directory"
+    if ($?) {
+      break
+    }
+  }
+  return (Join-Path $parent $name)
+}
+
+# Put everything in a function so that piping to bash fails gracefully if the
+# download is incomplete.
+function main {
+  $work_dir = New-TemporaryDirectory
+  try {
+    cd $work_dir
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-RestMethod `
+      -Uri "https://github.com/thejohnfreeman/cmake-future/archive/master.zip" `
+      -MaximumRedirection 10 `
+      -OutFile "master.zip"
+    Expand-Archive -Path "master.zip"
+    cd master\cmake-future-master
+    md build
+    cd build
+    cmake ..
+    cmake --build . --target install
+  } finally {
+    rm -Recurse -Force $work_dir
+  }
+}
+
+main
