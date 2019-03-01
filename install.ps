@@ -15,8 +15,10 @@ function New-TemporaryDirectory {
 # download is incomplete.
 function main {
   $work_dir = New-TemporaryDirectory
+  # How and why is this an array?
+  $work_dir = $work_dir[0]
+  pushd $work_dir
   try {
-    cd $work_dir
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-RestMethod `
       -Uri "https://github.com/thejohnfreeman/cmake-future/archive/master.zip" `
@@ -29,6 +31,7 @@ function main {
     cmake ..
     cmake --build . --target install
   } finally {
+    popd
     rm -Recurse -Force $work_dir
   }
 }
