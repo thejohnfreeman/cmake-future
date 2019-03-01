@@ -17,6 +17,6 @@
 #
 list(GET CMAKE_SYSTEM_PREFIX_PATH 0 PREFIX)
 if(${UNIX})
-  set(PREFIX "${PREFIX}/lib")
+  set(PREFIX "${PREFIX}/lib/cmake")
 endif()
-set(CMAKE_INSTALL_EXPORTDIR "${PREFIX}/cmake")
+set(CMAKE_INSTALL_EXPORTDIR "${PREFIX}")
