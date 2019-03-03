@@ -15,7 +15,24 @@
 #       DESTINATION ${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}
 #     )
 #
-list(GET CMAKE_SYSTEM_PREFIX_PATH 0 PREFIX)
+
+# Package configuration files (`<package>-config.cmake`) should be installed
+# like any other file: under `CMAKE_INSTALL_PREFIX`. We check that the
+# `CMAKE_INSTALL_PREFIX` can be found in the `CMAKE_SYSTEM_PREFIX_PATH`; if it
+# isn't, then `find_package` won't find our package configuration file.
+list(FIND CMAKE_SYSTEM_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}" INDEX)
+if(INDEX LESS 0)
+  # JOIN is not available until CMake 3.12.
+  string(
+    CONCAT MSG
+    "CMAKE_INSTALL_PREFIX not found in CMAKE_SYSTEM_PREFIX_PATH\n"
+    "CMAKE_INSTALL_PREFIX=\"${CMAKE_INSTALL_PREFIX}\"\n"
+    "CMAKE_SYSTEM_PREFIX_PATH=\"${CMAKE_SYSTEM_PREFIX_PATH}\""
+  )
+  message(SEND_ERROR "${MSG}")
+endif(INDEX LESS 0)
+
+set(PREFIX "${CMAKE_INSTALL_PREFIX}")
 if(${UNIX})
   set(PREFIX "${PREFIX}/lib/cmake")
 endif()
