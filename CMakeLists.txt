@@ -14,16 +14,28 @@ include(${CMAKE_SOURCE_DIR}/ExportDir.cmake)
 # Every `.cmake` file is an extension. Get a list of their names.
 get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
 
+include(CMakePackageConfigHelpers)
+
 # Install every extension as a package.
 foreach(PACKAGE_NAME ${PACKAGE_NAMES})
-  string(TOLOWER "${PACKAGE_NAME}-config.cmake" FILENAME)
+  string(TOLOWER ${PACKAGE_NAME} PACKAGE_NAME_LOWER)
+  file(READ ${PACKAGE_NAME}.cmake TEXT)
+  configure_file(
+    package-config.cmake.in
+    ${PACKAGE_NAME_LOWER}-config.cmake
+    @ONLY
+  )
+  write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+  )
   install(
     FILES
-      "${PACKAGE_NAME}.cmake"
+      "${CMAKE_BINARY_DIR}/${PACKAGE_NAME_LOWER}-config.cmake"
+      "${CMAKE_BINARY_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
     DESTINATION
       "${CMAKE_INSTALL_EXPORTDIR}/${PACKAGE_NAME}-${PROJECT_VERSION}"
-    RENAME
-      "${FILENAME}"
   )
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 
@@ -31,18 +43,16 @@ endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 # using `find_dependency`. We build a string that has a `find_dependency` line
 # for every extension, then we use `configure_file` to write those lines to
 # a new file.
-set(LINES "include(CMakeFindDependencyMacro)\n")
+set(TEXT "include(CMakeFindDependencyMacro)\n")
 foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   # `find_dependency` forwards the arguments from the `find_package` call that
   # found this package configuration file.
   # https://cmake.org/cmake/help/latest/module/CMakeFindDependencyMacro.html
-  string(APPEND LINES "find_dependency(${PACKAGE_NAME})\n")
+  string(APPEND TEXT "find_dependency(${PACKAGE_NAME})\n")
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
-configure_file(
-  "${PROJECT_NAME}-config.cmake.in"
-  "${PROJECT_NAME}-config.cmake"
-  @ONLY
-)
+set(PACKAGE_NAME ${PROJECT_NAME})
+# TODO: Rename to just package-config.cmake.in
+configure_file(package-config.cmake.in ${PROJECT_NAME}-config.cmake @ONLY)
 
 # Install the meta package.
 install(
@@ -54,12 +64,8 @@ install(
 
 # The same file, plus a line that finds the meta package, can serve as
 # a `CMakeLists.txt` for a project to test that our installation worked.
-string(APPEND LINES "find_package(${PROJECT_NAME} REQUIRED)\n")
-configure_file(
-  "${PROJECT_NAME}-config.cmake.in"
-  "CMakeLists.test.txt"
-  @ONLY
-)
+string(APPEND TEXT "find_package(${PROJECT_NAME} REQUIRED)\n")
+configure_file(package-config.cmake.in CMakeLists.test.txt @ONLY)
 
 enable_testing()
 

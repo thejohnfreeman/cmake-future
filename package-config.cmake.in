@@ -1,0 +1,2 @@
+message(STATUS "Found: @PROJECT_VERSION@ @PACKAGE_NAME@")
+@TEXT@
