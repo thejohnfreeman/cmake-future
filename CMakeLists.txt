@@ -22,18 +22,18 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   file(READ ${PACKAGE_NAME}.cmake TEXT)
   configure_file(
     package-config.cmake.in
-    ${PACKAGE_NAME_LOWER}-config.cmake
+    cmake/${PACKAGE_NAME_LOWER}-config.cmake
     @ONLY
   )
   write_basic_package_version_file(
-    "${CMAKE_BINARY_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
+    cmake/${PACKAGE_NAME_LOWER}-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
   )
   install(
     FILES
-      "${CMAKE_BINARY_DIR}/${PACKAGE_NAME_LOWER}-config.cmake"
-      "${CMAKE_BINARY_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
+      "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME_LOWER}-config.cmake"
+      "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME_LOWER}-config-version.cmake"
     DESTINATION
       "${CMAKE_INSTALL_EXPORTDIR}/${PACKAGE_NAME}-${PROJECT_VERSION}"
   )
@@ -52,12 +52,23 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 set(PACKAGE_NAME ${PROJECT_NAME})
 # TODO: Rename to just package-config.cmake.in
-configure_file(package-config.cmake.in ${PROJECT_NAME}-config.cmake @ONLY)
+configure_file(
+  package-config.cmake.in
+  cmake/${PROJECT_NAME}-config.cmake
+  @ONLY
+)
+
+write_basic_package_version_file(
+  cmake/${PROJECT_NAME}-config-version.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
 
 # Install the meta package.
 install(
   FILES
-    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+    "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-config.cmake"
+    "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-config-version.cmake"
   DESTINATION
     "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
@@ -65,11 +76,12 @@ install(
 # The same file, plus a line that finds the meta package, can serve as
 # a `CMakeLists.txt` for a project to test that our installation worked.
 string(APPEND TEXT "find_package(${PROJECT_NAME} REQUIRED)\n")
-configure_file(package-config.cmake.in CMakeLists.test.txt @ONLY)
+configure_file(package-config.cmake.in test/CMakeLists.test.txt @ONLY)
 
 enable_testing()
 
 # Add a test that tries to import all of our extensions.
-add_test(NAME find_packages
-  COMMAND "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/CMakeLists.test.txt"
+add_test(
+  NAME find_packages
+  COMMAND "${CMAKE_COMMAND}" -P test/CMakeLists.test.txt
 )
