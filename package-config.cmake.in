@@ -1,2 +1,7 @@
-message(STATUS "Found: @PROJECT_VERSION@ @PACKAGE_NAME@")
+if(@PACKAGE_NAME@_FOUND)
+  return()
+endif(@PACKAGE_NAME@_FOUND)
+
 @TEXT@
+
+message(STATUS "Found: @PROJECT_VERSION@ @PACKAGE_NAME@")
