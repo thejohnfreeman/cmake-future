@@ -1,7 +1,7 @@
 # https://cliutils.gitlab.io/modern-cmake/chapters/intro/newcmake.html
 cmake_minimum_required(VERSION 3.1)
 # No languages, not even C/C++, the defaults.
-project(future VERSION 1.0.0 LANGUAGES)
+project(future VERSION 1.0.1 LANGUAGES)
 
 include(${CMAKE_SOURCE_DIR}/get_names_with_file_suffix.cmake)
 # We need to install our extensions as packages into a location searched by
