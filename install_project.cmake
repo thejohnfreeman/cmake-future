@@ -14,8 +14,12 @@ set(install_project_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 function(project_dependency PACKAGE_NAME)
   find_package("${PACKAGE_NAME}" ${ARGN})
-  set(PACKAGES_FOUND ${PACKAGES_FOUND} "${PACKAGE_NAME}" PARENT_SCOPE)
+  set(PROJECT_DEPENDENCIES ${PROJECT_DEPENDENCIES} "${PACKAGE_NAME}" PARENT_SCOPE)
 endfunction(project_dependency PACKAGE_NAME)
+
+function(project_dev_dependency PACKAGE_NAME)
+  find_package("${PACKAGE_NAME}" ${ARGN})
+endfunction(project_dev_dependency PACKAGE_NAME)
 
 function(install_project)
   set(
