@@ -14,6 +14,12 @@ function New-TemporaryDirectory {
 # Put everything in a function so that piping to bash fails gracefully if the
 # download is incomplete.
 function main {
+  if (Test-Path env:commit) {
+    $commit = $env:commit
+  } else {
+    $commit = "master"
+  }
+
   $work_dir = New-TemporaryDirectory
   # How and why is this an array?
   $work_dir = $work_dir[0]
@@ -21,11 +27,15 @@ function main {
   try {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-RestMethod `
-      -Uri "https://github.com/thejohnfreeman/cmake-future/archive/master.zip" `
+      -Uri "https://github.com/thejohnfreeman/cmake-future/archive/${commit}.zip" `
       -MaximumRedirection 10 `
-      -OutFile "master.zip"
-    Expand-Archive -Path "master.zip"
-    cd master\cmake-future-master
+      -OutFile "archive.zip"
+    Expand-Archive -Path "archive.zip"
+    # Usually, the top-level directory will be named after the project and
+    # commit, e.g. `cmake-future-master`, but not always. For example, the
+    # commit `v1.0.0` will turn into the directory `cmake-future-1.0.0` (note
+    # the missing "v"). Regardless, there will be only one top-level directory.
+    cd archive\*
     md build
     cd build
     cmake ..

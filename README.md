@@ -6,6 +6,12 @@ should be included in CMake.
 
 ## Install
 
+Both installation scripts accept a Git commit-ish as a parameter. With Bash,
+it is a positional parameter; with Powershell, it must be an environment
+variable. The default value is `master`. This lets you choose the version you
+want to install, which can be handy, e.g. in a production environment.
+
+
 ### Linux and OSX
 
 You'll need `sudo` to install these extensions in the right place. You can
@@ -14,7 +20,7 @@ to see that it's very short and not dangerous.
 
 ```sh
 curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
-  | sudo env "PATH=$PATH" bash
+  | sudo env "PATH=$PATH" bash -s -- master
 ```
 
 ### Windows
@@ -26,7 +32,7 @@ to see that it's very short and not dangerous.
 
 ```powershell
 Invoke-RestMethod https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.ps `
-  | powershell
+  | powershell -Command '$env:commit = ''master''; powershell -Command -'
 ```
 
 
