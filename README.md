@@ -44,7 +44,17 @@ Invoke-RestMethod https://raw.githubusercontent.com/thejohnfreeman/cmake-future/
 
 After installation, each extension can be imported separately by name with
 `find_package(<name>)`, or you can import all of them at once with
-`find_package(future)`.
+`find_package(future)`. Extensions are semantically versioned, so you can make
+sure you get the latest version you have installed by using [the version sort
+capability](https://cmake.org/cmake/help/v3.7/command/find_package.html)
+added to `find_package` [in CMake
+3.7](https://blog.kitware.com/cmake-3-7-0-rc3-is-now-ready/):
+
+```
+set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
+set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
+find_package(future)
+```
 
 
 ### `add_test_from_target`
