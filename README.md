@@ -6,10 +6,12 @@ should be included in CMake.
 
 ## Install
 
-Both installation scripts accept a Git commit-ish as a parameter. With Bash,
-it is a positional parameter; with Powershell, it must be an environment
-variable. The default value is `master`. This lets you choose the version you
-want to install, which can be handy, e.g. in a production environment.
+Both installation scripts accept a Git commit-ish (e.g. hash, branch, or tag)
+as a parameter. With Bash, it is a positional parameter; with Powershell, it
+must be an environment variable. You can see how to pass these parameters in
+the one-liners below. If not given, the default value is `master`. This lets
+you fix the version you want to install, which can be handy, e.g., in
+a continuous integration environment.
 
 
 ### Linux and OSX
