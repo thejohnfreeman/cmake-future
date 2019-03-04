@@ -39,6 +39,13 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   )
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 
+# Special case: the template for `install_project`.
+install(
+  FILES package-config.cmake.in.in
+  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/install_project-${PROJECT_VERSION}"
+  RENAME package-config.cmake.in
+)
+
 # Create a meta package named after this project that imports every extension
 # using `find_dependency`. We build a string that has a `find_dependency` line
 # for every extension, then we use `configure_file` to write those lines to
