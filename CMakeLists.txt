@@ -16,6 +16,8 @@ get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
 
 include(CMakePackageConfigHelpers)
 
+add_custom_target(packages ALL)
+
 # Install every extension as a package.
 foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   set(
@@ -23,13 +25,26 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
     "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-${PROJECT_VERSION}"
   )
   string(TOLOWER ${PACKAGE_NAME} PACKAGE_NAME_LOWER)
-  file(READ ${PACKAGE_NAME}.cmake TEXT)
-  configure_file(
-    "package-config.cmake.in"
-    "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config.cmake"
-    @ONLY
+  set(INPUT "${CMAKE_CURRENT_SOURCE_DIR}/${PACKAGE_NAME}.cmake")
+  set(OUTPUT "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config.cmake")
+  add_custom_command(
+    OUTPUT "${OUTPUT}"
+    COMMAND
+      "${CMAKE_COMMAND}"
+      "-DINPUT=${INPUT}"
+      "-DOUTPUT=${OUTPUT}"
+      -P add_package.cmake
+    # `configure_file` will not touch its destination unless the output is
+    # different. We want to update the build time unconditionally.
+    COMMAND "${CMAKE_COMMAND}" -E touch "${OUTPUT}"
+    DEPENDS "${INPUT}" cmake/package-config.cmake.in cmake/add_package.cmake
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
   )
-  # The package version file is always created with mode 0644.
+  add_custom_target(${PACKAGE_NAME} DEPENDS "${OUTPUT}")
+  add_dependencies(packages ${PACKAGE_NAME})
+  # The package version file is always created with mode 0644. We only need to
+  # re-generate it when the project version changes, and CMake implicitly
+  # tracks a dependency between it and this `CMakeLists.txt`.
   write_basic_package_version_file(
     "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
     VERSION ${PROJECT_VERSION}
@@ -68,7 +83,7 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 set(PACKAGE_NAME ${PROJECT_NAME})
 configure_file(
-  package-config.cmake.in
+  cmake/package-config.cmake.in
   "${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
   @ONLY
 )
