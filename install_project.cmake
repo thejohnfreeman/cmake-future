@@ -24,7 +24,7 @@ endfunction(project_dev_dependency PACKAGE_NAME)
 function(install_project)
   set(
     PROJECT_EXPORT_DIR
-    "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
   )
 
   install(
@@ -38,20 +38,17 @@ function(install_project)
 
   configure_package_config_file(
     ${install_project_DIR}/package-config.cmake.in
-    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-    INSTALL_DESTINATION "${PROJECT_EXPORT_DIR}"
+    ${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake
   )
 
   write_basic_package_version_file(
-    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+    ${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
   )
 
   install(
-    FILES
-      ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-      ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
-    DESTINATION "${PROJECT_EXPORT_DIR}"
+    DIRECTORY "${PROJECT_EXPORT_DIR}"
+    DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
   )
 endfunction(install_project)

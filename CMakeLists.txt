@@ -18,24 +18,26 @@ include(CMakePackageConfigHelpers)
 
 # Install every extension as a package.
 foreach(PACKAGE_NAME ${PACKAGE_NAMES})
+  set(
+    PACKAGE_EXPORT_DIR
+    "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-${PROJECT_VERSION}"
+  )
   string(TOLOWER ${PACKAGE_NAME} PACKAGE_NAME_LOWER)
   file(READ ${PACKAGE_NAME}.cmake TEXT)
   configure_file(
-    package-config.cmake.in
-    cmake/${PACKAGE_NAME_LOWER}-config.cmake
+    "package-config.cmake.in"
+    "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config.cmake"
     @ONLY
   )
+  # The package version file is always created with mode 0644.
   write_basic_package_version_file(
-    cmake/${PACKAGE_NAME_LOWER}-config-version.cmake
+    "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
   )
   install(
-    FILES
-      "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME_LOWER}-config.cmake"
-      "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME_LOWER}-config-version.cmake"
-    DESTINATION
-      "${CMAKE_INSTALL_EXPORTDIR}/${PACKAGE_NAME}-${PROJECT_VERSION}"
+    DIRECTORY "${PACKAGE_EXPORT_DIR}"
+    DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
   )
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 
@@ -50,6 +52,10 @@ install(
 # using `find_dependency`. We build a string that has a `find_dependency` line
 # for every extension, then we use `configure_file` to write those lines to
 # a new file.
+set(
+  PROJECT_EXPORT_DIR
+  "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}"
+)
 set(TEXT "include(CMakeFindDependencyMacro)\n")
 foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   # `find_dependency` forwards the arguments from the `find_package` call that
@@ -61,26 +67,22 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   )
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 set(PACKAGE_NAME ${PROJECT_NAME})
-# TODO: Rename to just package-config.cmake.in
 configure_file(
   package-config.cmake.in
-  cmake/${PROJECT_NAME}-config.cmake
+  "${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
   @ONLY
 )
 
 write_basic_package_version_file(
-  cmake/${PROJECT_NAME}-config-version.cmake
+  "${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY AnyNewerVersion
 )
 
 # Install the meta package.
 install(
-  FILES
-    "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-config.cmake"
-    "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-config-version.cmake"
-  DESTINATION
-    "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
+  DIRECTORY "${PROJECT_EXPORT_DIR}"
+  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
 )
 
 # The same file, plus a line that finds the meta package, can serve as

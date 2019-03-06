@@ -51,3 +51,14 @@ if(${UNIX})
   set(PREFIX "${PREFIX}/lib/cmake")
 endif()
 set(CMAKE_INSTALL_EXPORTDIR "${PREFIX}")
+
+if(UNIX AND NOT IS_DIRECTORY "${CMAKE_INSTALL_EXPORTDIR}")
+  string(
+    CONCAT MSG
+    "CMake package directory (${CMAKE_INSTALL_EXPORTDIR}) does not exist.\n"
+    "CMake will create it with your umask."
+  )
+  message(WARNING "${MSG}")
+endif(UNIX AND NOT IS_DIRECTORY "${CMAKE_INSTALL_EXPORTDIR}")
+
+# TODO: Should we just create the directory for them?
