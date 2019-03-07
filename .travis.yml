@@ -8,6 +8,14 @@ multi-line: &multi-line
   - sudo env "PATH=$PATH" cmake --build . --target install
   - ctest -V
 
+one-line: &one-line
+  - curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
+    | sudo env "PATH=$PATH" bash -s -- ${TRAVIS_COMMIT}
+  - mkdir build
+  - cd build
+  - cmake ..
+  - ctest -V
+
 matrix:
   include:
     - os: linux
@@ -18,3 +26,11 @@ matrix:
       script: *multi-line
     - os: osx
       script: *multi-line
+    - os: linux
+      dist: xenial
+      script: *one-line
+    - os: linux
+      dist: trusty
+      script: *one-line
+    - os: osx
+      script: *one-line
