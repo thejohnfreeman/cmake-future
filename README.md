@@ -1,5 +1,7 @@
 # cmake-future
 
+[![Travis: build on Linux and OSX](https://travis-ci.org/thejohnfreeman/cmake-future.svg?branch=master)](https://travis-ci.org/thejohnfreeman/cmake-future)
+
 A collection of extensions (functions and special variables) that I think
 should be included in CMake.
 
