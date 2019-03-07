@@ -87,6 +87,7 @@ install(
 # a `CMakeLists.txt` for a project to test that our installation worked.
 string(
   CONCAT TEXT
+  "cmake_minimum_required(VERSION 3.0)\n"
   "project(test LANGUAGES)\n"
   "${TEXT}"
   "find_package(${PROJECT_NAME} ${PROJECT_VERSION} EXACT REQUIRED)\n"
