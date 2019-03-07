@@ -1,0 +1,16 @@
+sudo: required
+
+multi-line: &multi-line
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build . --target install
+  - ctest -V
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      script: *multi-line
+    - os: osx
+      script: *multi-line
