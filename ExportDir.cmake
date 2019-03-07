@@ -24,13 +24,12 @@ if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   )
   if(DEFINED CMAKE_SCRIPT_MODE_FILE)
     set(
-      MSG
-      "${MSG}"
+      MSG ${MSG}
       " (CMAKE_INSTALL_PREFIX is not defined by default when you run CMake \n"
       " in script mode (-P).)"
     )
   endif(DEFINED CMAKE_SCRIPT_MODE_FILE)
-  message(SEND_ERROR "${MSG}")
+  message(SEND_ERROR ${MSG})
   return()
 endif(NOT DEFINED CMAKE_INSTALL_PREFIX)
 
