@@ -12,5 +12,8 @@ matrix:
     - os: linux
       dist: xenial
       script: *multi-line
+    - os: linux
+      dist: trusty
+      script: *multi-line
     - os: osx
       script: *multi-line
