@@ -17,15 +17,20 @@
 #
 
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  message(SEND_ERROR
-    "CMAKE_INSTALL_PREFIX must be defined to use the ExportDir module."
+  # Unless we join these into the same message, they get separated by a stack
+  # trace, which is a bad user experience.
+  set(
+    MSG " CMAKE_INSTALL_PREFIX must be defined to use the ExportDir module.\n"
   )
   if(DEFINED CMAKE_SCRIPT_MODE_FILE)
-    message(
-      "CMAKE_INSTALL_PREFIX is not defined by default "
-      "when you run CMake in script mode (-P)."
+    set(
+      MSG
+      "${MSG}"
+      " (CMAKE_INSTALL_PREFIX is not defined by default when you run CMake \n"
+      " in script mode (-P).)"
     )
   endif(DEFINED CMAKE_SCRIPT_MODE_FILE)
+  message(SEND_ERROR "${MSG}")
   return()
 endif(NOT DEFINED CMAKE_INSTALL_PREFIX)
 
