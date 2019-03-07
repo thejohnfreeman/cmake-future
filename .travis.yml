@@ -4,7 +4,8 @@ multi-line: &multi-line
   - mkdir build
   - cd build
   - cmake ..
-  - sudo cmake --build . --target install
+  # cmake is not on the sudo PATH.
+  - sudo env "PATH=$PATH" cmake --build . --target install
   - ctest -V
 
 matrix:
