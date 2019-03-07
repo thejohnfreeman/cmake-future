@@ -55,7 +55,10 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   # `find_dependency` forwards the arguments from the `find_package` call that
   # found this package configuration file.
   # https://cmake.org/cmake/help/latest/module/CMakeFindDependencyMacro.html
-  string(APPEND TEXT "find_dependency(${PACKAGE_NAME})\n")
+  string(
+    APPEND TEXT
+    "find_dependency(${PACKAGE_NAME} ${PROJECT_VERSION} EXACT REQUIRED)\n"
+  )
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 set(PACKAGE_NAME ${PROJECT_NAME})
 # TODO: Rename to just package-config.cmake.in
@@ -82,13 +85,19 @@ install(
 
 # The same file, plus a line that finds the meta package, can serve as
 # a `CMakeLists.txt` for a project to test that our installation worked.
-string(APPEND TEXT "find_package(${PROJECT_NAME} REQUIRED)\n")
-configure_file(package-config.cmake.in test/CMakeLists.test.txt @ONLY)
+string(
+  CONCAT TEXT
+  "project(test LANGUAGES)\n"
+  "${TEXT}"
+  "find_package(${PROJECT_NAME} ${PROJECT_VERSION} EXACT REQUIRED)\n"
+)
+file(WRITE "${CMAKE_BINARY_DIR}/test/CMakeLists.txt" "${TEXT}")
 
 enable_testing()
 
 # Add a test that tries to import all of our extensions.
 add_test(
   NAME find_packages
-  COMMAND "${CMAKE_COMMAND}" -P test/CMakeLists.test.txt
+  COMMAND "${CMAKE_COMMAND}" .
+  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/test"
 )
