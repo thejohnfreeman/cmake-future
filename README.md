@@ -36,7 +36,7 @@ to see that it's very short and not dangerous.
 
 ```powershell
 Invoke-RestMethod https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.ps `
-  | powershell -Command '$env:commit = ''master''; powershell -Command -'
+  | powershell -Command "`$env:commit = 'master'; powershell -Command -"
 ```
 
 

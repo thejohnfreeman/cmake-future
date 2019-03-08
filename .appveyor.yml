@@ -1,0 +1,35 @@
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ARCH: x86
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ARCH: x86_64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      ARCH: x86
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      ARCH: x86_64
+
+configuration:
+  - MultiLine
+  - OneLine
+
+build_script:
+  - ps: |
+      Invoke-RestMethod https://raw.githubusercontent.com/thejohnfreeman/cmake-future/$env:APPVEYOR_REPO_COMMIT/install.ps `
+        | powershell -Command "`$env:commit = '$env:APPVEYOR_REPO_COMMIT'; powershell -Command -"
+      mkdir build
+      cd build
+      cmake ..
+      ctest --verbose
+
+for:
+  - matrix:
+      only:
+        - configuration: MultiLine
+    build_script:
+      - ps: |
+          md build
+          cd build
+          cmake ..
+          cmake --build . --target install
+          ctest --verbose
