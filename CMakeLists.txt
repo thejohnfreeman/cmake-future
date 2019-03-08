@@ -118,6 +118,10 @@ enable_testing()
 # Add a test that tries to import all of our extensions.
 add_test(
   NAME find_packages
-  COMMAND "${CMAKE_COMMAND}" .
+  COMMAND
+    "${CMAKE_COMMAND}"
+    "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
+    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
+    .
   WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/test"
 )
