@@ -33,6 +33,8 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
       "${CMAKE_COMMAND}"
       "-DINPUT=${INPUT}"
       "-DOUTPUT=${OUTPUT}"
+      "-DPACKAGE_NAME=${PACKAGE_NAME}"
+      "-DPROJECT_VERSION=${PROJECT_VERSION}"
       -P add_package.cmake
     # `configure_file` will not touch its destination unless the output is
     # different. We want to update the build time unconditionally.
