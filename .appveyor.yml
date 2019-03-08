@@ -20,7 +20,7 @@ build_script:
       mkdir build
       cd build
       cmake ..
-      ctest --verbose
+      ctest --build-config Debug --verbose
 
 for:
   - matrix:
@@ -32,4 +32,4 @@ for:
           cd build
           cmake ..
           cmake --build . --target install
-          ctest --verbose
+          ctest --build-config Debug --verbose
