@@ -22,10 +22,8 @@ function(project_dev_dependency PACKAGE_NAME)
 endfunction(project_dev_dependency PACKAGE_NAME)
 
 function(install_project)
-  set(
-    PROJECT_EXPORT_DIR
-    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
-  )
+  set(PROJECT_SLUG "${PROJECT_NAME}-${PROJECT_VERSION}")
+  set(PROJECT_EXPORT_DIR "${CMAKE_BINARY_DIR}/${PROJECT_SLUG}")
 
   install(
     EXPORT ${PROJECT_NAME}-targets
@@ -39,6 +37,7 @@ function(install_project)
   configure_package_config_file(
     ${install_project_DIR}/package-config.cmake.in
     ${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake
+    INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_SLUG}"
   )
 
   write_basic_package_version_file(
