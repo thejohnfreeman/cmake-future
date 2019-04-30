@@ -6,10 +6,10 @@ multi-line: &multi-line
   - cmake ..
   # cmake is not on the sudo PATH.
   - sudo env "PATH=$PATH" cmake --build . --target install
-  - ctest -V
+  - ctest --verbose
 
 one-line: &one-line
-  - curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
+  - curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/${TRAVIS_COMMIT}/install.sh \
     | sudo env "PATH=$PATH" bash -s -- ${TRAVIS_COMMIT}
   - mkdir build
   - cd build
