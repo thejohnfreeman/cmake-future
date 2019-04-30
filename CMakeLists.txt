@@ -3,67 +3,17 @@ cmake_minimum_required(VERSION 3.1)
 # No languages, not even C/C++, the defaults.
 project(future VERSION 1.0.2 LANGUAGES)
 
-include(${CMAKE_SOURCE_DIR}/get_names_with_file_suffix.cmake)
+add_subdirectory(src)
+# Use properties of targets instead of setting variables that cross scope
+# boundaries.
+get_target_property(PACKAGE_NAMES packages MANUALLY_ADDED_DEPENDENCIES)
+
 # We need to install our extensions as packages into a location searched by
 # `find_package`. The exact path depends on the platform. We use a switch on
 # platform (`UNIX` and `WIN32`) to choose the right installation path. In
 # fact, we package that switch as one of the extensions that we install, and
 # we just import it here.
-include(${CMAKE_SOURCE_DIR}/ExportDir.cmake)
-
-# Every `.cmake` file is an extension. Get a list of their names.
-get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
-
-include(CMakePackageConfigHelpers)
-
-add_custom_target(packages ALL)
-
-# Install every extension as a package.
-foreach(PACKAGE_NAME ${PACKAGE_NAMES})
-  set(
-    PACKAGE_EXPORT_DIR
-    "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-${PROJECT_VERSION}"
-  )
-  string(TOLOWER ${PACKAGE_NAME} PACKAGE_NAME_LOWER)
-  set(INPUT "${CMAKE_CURRENT_SOURCE_DIR}/${PACKAGE_NAME}.cmake")
-  set(OUTPUT "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config.cmake")
-  add_custom_command(
-    OUTPUT "${OUTPUT}"
-    COMMAND
-      "${CMAKE_COMMAND}"
-      "-DINPUT=${INPUT}"
-      "-DOUTPUT=${OUTPUT}"
-      "-DPACKAGE_NAME=${PACKAGE_NAME}"
-      "-DPROJECT_VERSION=${PROJECT_VERSION}"
-      -P add_package.cmake
-    # `configure_file` will not touch its destination unless the output is
-    # different. We want to update the build time unconditionally.
-    COMMAND "${CMAKE_COMMAND}" -E touch "${OUTPUT}"
-    DEPENDS "${INPUT}" cmake/package-config.cmake.in cmake/add_package.cmake
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
-  )
-  add_custom_target(${PACKAGE_NAME} DEPENDS "${OUTPUT}")
-  add_dependencies(packages ${PACKAGE_NAME})
-  # The package version file is always created with mode 0644. We only need to
-  # re-generate it when the project version changes, and CMake implicitly
-  # tracks a dependency between it and this `CMakeLists.txt`.
-  write_basic_package_version_file(
-    "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY AnyNewerVersion
-  )
-  install(
-    DIRECTORY "${PACKAGE_EXPORT_DIR}"
-    DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
-  )
-endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
-
-# Special case: the template for `install_project`.
-install(
-  FILES package-config.cmake.in.in
-  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/install_project-${PROJECT_VERSION}"
-  RENAME package-config.cmake.in
-)
+include(src/ExportDir.cmake)
 
 # Create a meta package named after this project that imports every extension
 # using `find_dependency`. We build a string that has a `find_dependency` line
