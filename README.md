@@ -111,3 +111,49 @@ install(EXPORT ${PROJECT_NAME}-targets
 
 (This example is based on [this pattern for writing package
 exports](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).)
+
+
+### `install_project`
+
+```cmake
+project_dependency(<name> [args...])
+project_dev_dependency(<name> [args...])
+install_project()
+```
+
+```cmake
+project_dependency(Boost REQUIRED)
+project_dev_dependency(GTest REQUIRED)
+
+add_library(my_library)
+install(
+  TARGETS my_library
+  EXPORT my_project-targets
+)
+
+install_project()
+```
+
+This module has a few functions to help you install your project according to
+the [best practices of Modern
+CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).
+
+- `project_dependency` works like `find_package`, but will remember the
+  package name so that when someone imports your installed package, your
+  package configuration file will import this dependency.
+
+- `project_dev_dependency` works like `find_package`.
+
+- You should call the previous functions near the beginning of your top-level
+  `CMakeLists.txt`, much like you where you would put `#include`s or `import`
+  statements in a program, and for the same reasons. Before calling the next
+  and last function, remember to add any targets you want to export to an
+  export set named `${PROJECT_NAME}-targets`.
+
+- `install_project` installs your project. It creates a [package configuration
+  file](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#config-file-packages);
+  a [package version
+  file](https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html#generating-a-package-version-file)
+  (using the `AnyNewerVersion` policy); and an [export
+  file](https://cmake.org/cmake/help/latest/command/install.html#export) with
+  the `${PROJECT_NAME}-targets` export set.
