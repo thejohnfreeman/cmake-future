@@ -37,6 +37,7 @@ endif(NOT DEFINED CMAKE_INSTALL_PREFIX)
 # like any other file: under `CMAKE_INSTALL_PREFIX`. We check that the
 # `CMAKE_INSTALL_PREFIX` can be found in the `CMAKE_SYSTEM_PREFIX_PATH`; if it
 # isn't, then `find_package` won't find our package configuration file.
+# TODO: Do we need to search in `CMAKE_PREFIX_PATH` as well?
 list(FIND CMAKE_SYSTEM_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}" INDEX)
 if(INDEX LESS 0)
   message(WARNING

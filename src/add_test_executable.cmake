@@ -1,5 +1,6 @@
 # https://stackoverflow.com/a/10824578/618906
-function(add_test_from_target TARGET)
+function(add_test_executable TARGET)
+  add_executable(${TARGET} ${ARGN})
   add_test(
     NAME ${TARGET}_build
     COMMAND
@@ -10,4 +11,4 @@ function(add_test_from_target TARGET)
     )
   add_test(NAME ${TARGET} COMMAND ${TARGET})
   set_tests_properties(${TARGET} PROPERTIES DEPENDS ${TARGET}_build)
-endfunction(add_test_from_target TARGET)
+endfunction(add_test_executable TARGET)

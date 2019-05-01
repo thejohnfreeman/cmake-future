@@ -58,31 +58,38 @@ find_package(future)
 ```
 
 
-### `add_test_from_target`
+## Modules
+
+### `add_test_executable`
 
 ```cmake
-enable_testing()
-add_executable(my_test EXCLUDE_FROM_ALL ...)
-add_test_from_target(my_test) # instead of add_test(my_test)
+add_test_executable(<name> [args...])
 ```
 
-Like `add_test`, this will add an executable target as a test, but unlike
-`add_test`, it will add an additional "test" that rebuilds the target if its
-dependencies have changed. Inspired by [this answer on Stack
-Overflow](https://stackoverflow.com/a/10824578/618906).
+```cmake
+enable_testing() # Do not forget this!
+add_test_executable(my_test EXCLUDE_FROM_ALL my_test.cpp)
+```
+
+Like `add_executable` plus `add_test`, this will add an executable target with
+the given name as a test, but unlike `add_test`, it will add an additional
+"test" that rebuilds the target if its dependencies have changed. Inspired by
+[this answer on Stack Overflow](https://stackoverflow.com/a/10824578/618906).
+With this, you will never run out-of-date tests. Additional args are passed
+through to [`add_executable`](https://cmake.org/cmake/help/latest/command/add_executable.html).
 
 
 ### `get_names_with_file_suffix`
 
 ```cmake
+get_names_with_file_suffix(<variable> <suffix>)
+```
+
+```cmake
 get_names_with_file_suffix(MY_TESTS ".cpp")
 foreach(MY_TEST ${MY_TESTS})
-  add_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
-  target_link_libraries(${MY_TEST}
-    PRIVATE
-      gtest::gtest
-  )
-  add_test_from_target(${MY_TEST})
+  add_test_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
+  target_link_libraries(${MY_TEST} PRIVATE gtest::gtest)
 endforeach(MY_TEST ${MY_TESTS})
 ```
 
