@@ -14,14 +14,33 @@ set(install_project_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 # TODO: Remember the arguments passed to `project_dependency` and pass them to
 # `find_dependency` in the package configuration file.
-function(future_project_dependency PACKAGE_NAME)
-  find_package("${PACKAGE_NAME}" ${ARGN})
-  set(PROJECT_DEPENDENCIES ${PROJECT_DEPENDENCIES} "${PACKAGE_NAME}" PARENT_SCOPE)
-endfunction(future_project_dependency PACKAGE_NAME)
+function(future_add_dependency SCOPE PACKAGE_NAME)
+  # One Boolean option: `OPTIONAL`.
+  # (One forbidden option: `REQUIRED`. See below.)
+  # No single- or multi-value parameters.
+  cmake_parse_arguments(ARG "OPTIONAL;REQUIRED" "" "" ${ARGN})
 
-function(future_project_dev_dependency PACKAGE_NAME)
-  find_package("${PACKAGE_NAME}" ${ARGN})
-endfunction(future_project_dev_dependency PACKAGE_NAME)
+  if(ARG_REQUIRED)
+    message(SEND_ERROR "Dependencies are required by default. `REQUIRED` is not an option for ${PACKAGE_NAME}.")
+  endif()
+
+  if(ARG_OPTIONAL)
+    set(ARG_REQUIRED "")
+  else()
+    set(ARG_REQUIRED "REQUIRED")
+  endif()
+
+  find_package("${PACKAGE_NAME}" ${ARG_REQUIRED} ${ARG_UNPARSED_ARGUMENTS})
+
+  if("${SCOPE}" STREQUAL PUBLIC)
+    # TODO: Could we set a property on the project?
+    set(PROJECT_DEPENDENCIES ${PROJECT_DEPENDENCIES} "${PACKAGE_NAME}" PARENT_SCOPE)
+  elseif("${SCOPE}" STREQUAL PRIVATE)
+    # Ok.
+  else()
+    message(SEND_ERROR "Unknown scope for dependency ${PACKAGE_NAME}: ${SCOPE}")
+  endif()
+endfunction(future_add_dependency)
 
 function(future_install_project)
   set(PROJECT_SLUG "${PROJECT_NAME}-${PROJECT_VERSION}")
