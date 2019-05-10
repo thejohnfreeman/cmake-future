@@ -67,6 +67,30 @@ find_package(future)
 ```
 
 
+<a id="conventions" />
+
+## Conventions
+
+These extensions respect and embody a few popular conventions that I and
+[many](https://www.youtube.com/watch?v=eC9-iRN2b04)
+[others](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
+[consider](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/)
+best practices. In the spirit of ["convention over
+configuration"](https://en.wikipedia.org/wiki/Convention_over_configuration),
+they try to minimize boilerplate, which helps newcomers get up and running
+sooner and helps experienced users avoid common pitfalls.
+
+- All targets should be
+  [aliased](https://cmake.org/cmake/help/latest/command/add_library.html#alias-libraries)
+  and exported under a **Project
+  [Namespace](https://stackoverflow.com/a/48526017/618906)** called
+  `${PROJECT_NAME}::`. That way, target `b` that depends on target `a` can use
+  the same syntax (`target_link_libraries(b project::a)`) whether `b` is in
+  the same project or in another project.
+- All exported targets should be added to the **Default Export Set** called
+  `${PROJECT_NAME}-targets`.
+
+
 ## Modules
 
 ### `future_add_headers`
@@ -76,14 +100,15 @@ future_add_headers(<name> [DIRECTORY <dir>] [DESTINATION <dir>])
 ```
 
 ```cmake
-future_add_headers(${PROJECT_NAME}_headers)
+future_add_headers(${PROJECT_NAME}_headers DIRECTORY include)
 ```
 
-Adds an `INTERFACE` library target named `<name>` for the headers in
-`DIRECTORY` (which defaults to `CMAKE_CURRENT_SOURCE_DIR`), and adds it to the
-export set `${PROJECT_NAME}-targets`. It will be installed at `DESTINATION`
-(default
-[`CMAKE_INSTALL_INCLUDEDIR`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html#result-variables)).
+- Adds an `INTERFACE` library target called `<name>` for the headers in
+  `DIRECTORY` (which defaults to `CMAKE_CURRENT_SOURCE_DIR`)
+- Aliases the library in the [Project Namespace](#conventions).
+- Adds the library to the [Default Export Set](#conventions).
+- Installs the headers at `DESTINATION` (default
+  [`CMAKE_INSTALL_INCLUDEDIR`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html#result-variables)).
 
 
 ### `future_add_test_executable`
@@ -97,12 +122,13 @@ enable_testing() # Do not forget this!
 future_add_test_executable(my_test EXCLUDE_FROM_ALL my_test.cpp)
 ```
 
-Like `add_executable` plus `add_test`, this will add an executable target with
-the given name as a test, but unlike `add_test`, it will add an additional
+Like `add_executable` plus `add_test`, this will add an executable target
+called `<name>` as a test, but unlike `add_test`, it will add an additional
 "test" that rebuilds the target if its dependencies have changed. Inspired by
 [this answer on Stack Overflow](https://stackoverflow.com/a/10824578/618906).
-With this, you will never run out-of-date tests. Additional args are passed
-through to [`add_executable`](https://cmake.org/cmake/help/latest/command/add_executable.html).
+With this, you will never run out-of-date tests. Remaining arguments are
+passed through to
+[`add_executable`](https://cmake.org/cmake/help/latest/command/add_executable.html).
 
 
 ### `future_get_names_with_file_suffix`
@@ -120,8 +146,8 @@ endforeach(MY_TEST ${MY_TESTS})
 ```
 
 This will search the current source directory for files with the given suffix,
-extract their filenames (minus the suffix), and collect them in a list
-variable of the given name.
+extract their filenames (minus the suffix), and collect them as a list in the
+given `<variable>`.
 
 
 ### `FutureExportDir`
@@ -136,9 +162,9 @@ for installed packages.
 
 ```cmake
 install(EXPORT ${PROJECT_NAME}-targets
-    FILE ${PROJECT_NAME}-targets.cmake
-    NAMESPACE ${PROJECT_NAME}::
-    DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
+  FILE ${PROJECT_NAME}-targets.cmake
+  NAMESPACE ${PROJECT_NAME}::
+  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
 ```
 
@@ -180,8 +206,8 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
 - You should call the previous functions near the beginning of your top-level
   `CMakeLists.txt`, much like you where you would put `#include`s or `import`
   statements in a program, and for the same reasons. Before calling the next
-  and last function, remember to add any targets you want to export to an
-  export set named `${PROJECT_NAME}-targets`.
+  and last function, remember to add any targets you want to the [Default
+  Export Set](#conventions) (`${PROJECT_NAME}-targets`).
 
 - `future_install_project` installs your project. It creates a [package
   configuration
@@ -190,5 +216,5 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
   file](https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html#generating-a-package-version-file)
   (using the `SameMajorVersion` policy to approximate [semantic
   versioning](https://semver.org/)); and an [export
-  file](https://cmake.org/cmake/help/latest/command/install.html#export) with
-  the `${PROJECT_NAME}-targets` export set.
+  file](https://cmake.org/cmake/help/latest/command/install.html#export) for
+  the Default Export Set (scoped to the [Project Namespace](#conventions)).
