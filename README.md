@@ -111,6 +111,25 @@ future_add_headers(${PROJECT_NAME}_headers DIRECTORY include)
   [`CMAKE_INSTALL_INCLUDEDIR`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html#result-variables)).
 
 
+### `future_add_library`
+
+```cmake
+future_add_library(<name> [args...])
+```
+
+```cmake
+future_add_library(${PROJECT_NAME} a.cpp b.cpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
+```
+
+- Adds a library target called `<name>`, passing any remaining arguments to
+  [`add_library`](https://cmake.org/cmake/help/latest/command/add_library.html).
+- Aliases the library in the [Project Namespace](#conventions).
+- Adds the library to the [Default Export Set](#conventions).
+- Installs the library to destinations according to
+  [`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html).
+
+
 ### `future_add_test_executable`
 
 ```cmake
