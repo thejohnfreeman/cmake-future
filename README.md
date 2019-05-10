@@ -194,20 +194,17 @@ exports](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develo
 ### `future_install_project`
 
 ```cmake
-future_project_dependency(<name> [args...])
-future_project_dev_dependency(<name> [args...])
+future_add_dependency([PUBLIC|PRIVATE] <name> [OPTIONAL] [args...])
 future_install_project()
 ```
 
 ```cmake
-future_project_dependency(Boost REQUIRED)
-future_project_dev_dependency(GTest REQUIRED)
+future_add_dependency(PUBLIC Boost)
+future_add_dependency(PRIVATE GTest)
 
 add_library(my_library)
-install(
-  TARGETS my_library
-  EXPORT my_project-targets
-)
+install(TARGETS my_library EXPORT ${PROJECT_NAME}-targets)
+...
 
 future_install_project()
 ```
@@ -216,13 +213,16 @@ This module has a few functions to help you install your project according to
 the [best practices of Modern
 CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).
 
-- `future_project_dependency` works like `find_package`, but will remember the
-  package name so that when someone imports your installed package, your
-  package configuration file will import this dependency.
+- `future_add_dependency` works like `find_package`. `PUBLIC` dependencies
+  are imported by your package configuration file, so that your dependents
+  will transitively import them. `PRIVATE` dependencies are not. Good
+  candidates for `PRIVATE` dependencies are development dependencies like test
+  frameworks. Dependencies are required by default; you can pass `OPTIONAL` if
+  you want CMake to continue even when the dependency cannot be found. All
+  remaining arguments will be passed through to
+  [`find_package`](https://cmake.org/cmake/help/latest/command/find_package.html).
 
-- `future_project_dev_dependency` works like `find_package`.
-
-- You should call the previous functions near the beginning of your top-level
+- You should add all your dependencies near the beginning of your top-level
   `CMakeLists.txt`, much like you where you would put `#include`s or `import`
   statements in a program, and for the same reasons. Before calling the next
   and last function, remember to add any targets you want to the [Default
