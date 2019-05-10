@@ -71,9 +71,10 @@ find_package(future)
 
 ## Conventions
 
-These extensions respect and embody a few popular conventions that I and
-[many](https://www.youtube.com/watch?v=eC9-iRN2b04)
-[others](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
+These extensions respect and embody a few popular conventions that the
+[community](https://www.youtube.com/watch?v=eC9-iRN2b04)
+[seems](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
+to
 [consider](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/)
 best practices. In the spirit of ["convention over
 configuration"](https://en.wikipedia.org/wiki/Convention_over_configuration),
@@ -93,7 +94,11 @@ sooner and helps experienced users avoid common pitfalls.
 
 ## Modules
 
-### `future_add_headers`
+The headers below link to their module file so that you can double-check its
+implementation.
+
+
+### [`future_add_headers`](./src/future_add_headers.cmake)
 
 ```cmake
 future_add_headers(<name> [DIRECTORY <dir>] [DESTINATION <dir>])
@@ -111,7 +116,7 @@ future_add_headers(${PROJECT_NAME}_headers DIRECTORY include)
   [`CMAKE_INSTALL_INCLUDEDIR`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html#result-variables)).
 
 
-### `future_add_library`
+### [`future_add_library`](./src/future_add_library.cmake)
 
 ```cmake
 future_add_library(<name> [args...])
@@ -130,7 +135,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
   [`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html).
 
 
-### `future_add_test_executable`
+### [`future_add_test_executable`](./src/future_add_test_executable.cmake)
 
 ```cmake
 future_add_test_executable(<name> [args...])
@@ -150,7 +155,7 @@ passed through to
 [`add_executable`](https://cmake.org/cmake/help/latest/command/add_executable.html).
 
 
-### `future_get_names_with_file_suffix`
+### [`future_get_names_with_file_suffix`](./src/future_get_names_with_file_suffix.cmake)
 
 ```cmake
 future_get_names_with_file_suffix(<variable> <suffix>)
@@ -169,7 +174,7 @@ extract their filenames (minus the suffix), and collect them as a list in the
 given `<variable>`.
 
 
-### `FutureExportDir`
+### [`FutureExportDir`](./src/FutureExportDir.cmake)
 
 This extension is named `FutureExportDir` (modeled after
 [`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)),
@@ -191,7 +196,7 @@ install(EXPORT ${PROJECT_NAME}-targets
 exports](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).)
 
 
-### `future_install_project`
+### [`future_install_project`](./src/future_install_project.cmake)
 
 ```cmake
 future_add_dependency([PUBLIC|PRIVATE] <name> [OPTIONAL] [args...])
