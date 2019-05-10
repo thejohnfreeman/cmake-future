@@ -40,6 +40,15 @@ to see that it's very short and not dangerous.
   | powershell -Command "`$env:commit = 'master'; powershell -Command -"
 ```
 
+### From source
+
+```sh
+mkdir build
+cd build
+cmake ..
+sudo cmake --build . --target install
+```
+
 
 ## Use
 
