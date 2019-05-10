@@ -43,7 +43,7 @@ configure_file(
 write_basic_package_version_file(
   "${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
-  COMPATIBILITY AnyNewerVersion
+  COMPATIBILITY SameMajorVersion
 )
 
 # Install the meta package.

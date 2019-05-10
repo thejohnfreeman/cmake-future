@@ -162,6 +162,7 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
   file](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#config-file-packages);
   a [package version
   file](https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html#generating-a-package-version-file)
-  (using the `AnyNewerVersion` policy); and an [export
+  (using the `SameMajorVersion` policy to approximate [semantic
+  versioning](https://semver.org/)); and an [export
   file](https://cmake.org/cmake/help/latest/command/install.html#export) with
   the `${PROJECT_NAME}-targets` export set.

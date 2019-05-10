@@ -44,7 +44,7 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   write_basic_package_version_file(
     "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
     VERSION ${PROJECT_VERSION}
-    COMPATIBILITY AnyNewerVersion
+    COMPATIBILITY SameMajorVersion
   )
   install(
     DIRECTORY "${PACKAGE_EXPORT_DIR}"
