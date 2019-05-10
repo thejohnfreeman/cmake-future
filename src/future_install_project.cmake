@@ -9,21 +9,21 @@
 # `project_dependency` (named in the fashion of `target_<property>`) instead
 # of `find_package`, and finish their installation with `install_project`.
 
-find_package(ExportDir)
+find_package(FutureExportDir)
 set(install_project_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 # TODO: Remember the arguments passed to `project_dependency` and pass them to
 # `find_dependency` in the package configuration file.
-function(project_dependency PACKAGE_NAME)
+function(future_project_dependency PACKAGE_NAME)
   find_package("${PACKAGE_NAME}" ${ARGN})
   set(PROJECT_DEPENDENCIES ${PROJECT_DEPENDENCIES} "${PACKAGE_NAME}" PARENT_SCOPE)
-endfunction(project_dependency PACKAGE_NAME)
+endfunction(future_project_dependency PACKAGE_NAME)
 
-function(project_dev_dependency PACKAGE_NAME)
+function(future_project_dev_dependency PACKAGE_NAME)
   find_package("${PACKAGE_NAME}" ${ARGN})
-endfunction(project_dev_dependency PACKAGE_NAME)
+endfunction(future_project_dev_dependency PACKAGE_NAME)
 
-function(install_project)
+function(future_install_project)
   set(PROJECT_SLUG "${PROJECT_NAME}-${PROJECT_VERSION}")
   set(PROJECT_EXPORT_DIR "${CMAKE_BINARY_DIR}/${PROJECT_SLUG}")
 
@@ -52,4 +52,4 @@ function(install_project)
     DIRECTORY "${PROJECT_EXPORT_DIR}"
     DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
   )
-endfunction(install_project)
+endfunction(future_install_project)

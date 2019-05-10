@@ -13,7 +13,7 @@ get_target_property(PACKAGE_NAMES packages MANUALLY_ADDED_DEPENDENCIES)
 # platform (`UNIX` and `WIN32`) to choose the right installation path. In
 # fact, we package that switch as one of the extensions that we install, and
 # we just import it here.
-include(src/ExportDir.cmake)
+include(src/FutureExportDir.cmake)
 
 # Create a meta package named after this project that imports every extension
 # using `find_dependency`. We build a string that has a `find_dependency` line

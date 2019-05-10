@@ -60,15 +60,15 @@ find_package(future)
 
 ## Modules
 
-### `add_test_executable`
+### `future_add_test_executable`
 
 ```cmake
-add_test_executable(<name> [args...])
+future_add_test_executable(<name> [args...])
 ```
 
 ```cmake
 enable_testing() # Do not forget this!
-add_test_executable(my_test EXCLUDE_FROM_ALL my_test.cpp)
+future_add_test_executable(my_test EXCLUDE_FROM_ALL my_test.cpp)
 ```
 
 Like `add_executable` plus `add_test`, this will add an executable target with
@@ -79,16 +79,16 @@ With this, you will never run out-of-date tests. Additional args are passed
 through to [`add_executable`](https://cmake.org/cmake/help/latest/command/add_executable.html).
 
 
-### `get_names_with_file_suffix`
+### `future_get_names_with_file_suffix`
 
 ```cmake
-get_names_with_file_suffix(<variable> <suffix>)
+future_get_names_with_file_suffix(<variable> <suffix>)
 ```
 
 ```cmake
-get_names_with_file_suffix(MY_TESTS ".cpp")
+future_get_names_with_file_suffix(MY_TESTS ".cpp")
 foreach(MY_TEST ${MY_TESTS})
-  add_test_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
+  future_add_test_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
   target_link_libraries(${MY_TEST} PRIVATE gtest::gtest)
 endforeach(MY_TEST ${MY_TESTS})
 ```
@@ -98,9 +98,9 @@ extract their filenames (minus the suffix), and collect them in a list
 variable of the given name.
 
 
-### `ExportDir`
+### `FutureExportDir`
 
-This extension is named `ExportDir` (modeled after
+This extension is named `FutureExportDir` (modeled after
 [`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)),
 but its export is a variable named `CMAKE_INSTALL_EXPORTDIR`. Its value is one
 of the name-based paths searched by
@@ -120,17 +120,17 @@ install(EXPORT ${PROJECT_NAME}-targets
 exports](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).)
 
 
-### `install_project`
+### `future_install_project`
 
 ```cmake
-project_dependency(<name> [args...])
-project_dev_dependency(<name> [args...])
-install_project()
+future_project_dependency(<name> [args...])
+future_project_dev_dependency(<name> [args...])
+future_install_project()
 ```
 
 ```cmake
-project_dependency(Boost REQUIRED)
-project_dev_dependency(GTest REQUIRED)
+future_project_dependency(Boost REQUIRED)
+future_project_dev_dependency(GTest REQUIRED)
 
 add_library(my_library)
 install(
@@ -138,18 +138,18 @@ install(
   EXPORT my_project-targets
 )
 
-install_project()
+future_install_project()
 ```
 
 This module has a few functions to help you install your project according to
 the [best practices of Modern
 CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).
 
-- `project_dependency` works like `find_package`, but will remember the
+- `future_project_dependency` works like `find_package`, but will remember the
   package name so that when someone imports your installed package, your
   package configuration file will import this dependency.
 
-- `project_dev_dependency` works like `find_package`.
+- `future_project_dev_dependency` works like `find_package`.
 
 - You should call the previous functions near the beginning of your top-level
   `CMakeLists.txt`, much like you where you would put `#include`s or `import`
@@ -157,7 +157,8 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
   and last function, remember to add any targets you want to export to an
   export set named `${PROJECT_NAME}-targets`.
 
-- `install_project` installs your project. It creates a [package configuration
+- `future_install_project` installs your project. It creates a [package
+  configuration
   file](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#config-file-packages);
   a [package version
   file](https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html#generating-a-package-version-file)

@@ -1,8 +1,8 @@
-include(get_names_with_file_suffix.cmake)
-include(ExportDir.cmake)
+include(future_get_names_with_file_suffix.cmake)
+include(FutureExportDir.cmake)
 
 # Every `.cmake` file is an extension. Get a list of their names.
-get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
+future_get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
 
 include(CMakePackageConfigHelpers)
 
@@ -55,6 +55,6 @@ endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 # Special case: the template for `install_project`.
 install(
   FILES package-config.cmake.in.in
-  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/install_project-${PROJECT_VERSION}"
+  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/future_install_project-${PROJECT_VERSION}"
   RENAME package-config.cmake.in
 )

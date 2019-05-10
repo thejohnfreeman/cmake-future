@@ -30,7 +30,7 @@ test1: install
 	ls -l ${install_dir}
 	ls -l ${install_dir}/lib
 	ls -l ${install_dir}/lib/cmake
-	ls -l ${install_dir}/lib/cmake/install_project-*
+	ls -l ${install_dir}/lib/cmake/future_install_project-*
 	ls -l ${install_dir}/lib/cmake/future-*
 	cd ${build_dir}; ctest --verbose
 
