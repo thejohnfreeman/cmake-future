@@ -69,6 +69,23 @@ find_package(future)
 
 ## Modules
 
+### `future_add_headers`
+
+```cmake
+future_add_headers(<name> [DIRECTORY <dir>] [DESTINATION <dir>])
+```
+
+```cmake
+future_add_headers(${PROJECT_NAME}_headers)
+```
+
+Adds an `INTERFACE` library target named `<name>` for the headers in
+`DIRECTORY` (which defaults to `CMAKE_CURRENT_SOURCE_DIR`), and adds it to the
+export set `${PROJECT_NAME}-targets`. It will be installed at `DESTINATION`
+(default
+[`CMAKE_INSTALL_INCLUDEDIR`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html#result-variables)).
+
+
 ### `future_add_test_executable`
 
 ```cmake
