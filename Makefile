@@ -2,7 +2,7 @@
 # Do not treat it as a continuous integration test.
 
 build_dir := build
-install_dir := prefix
+install_dir := $(abspath prefix)
 
 ${install_dir} :
 	umask 0022; mkdir --parents ${install_dir}/lib/cmake
@@ -15,7 +15,7 @@ ${build_dir} :
 ${build_dir}/configured : CMakeLists.txt | ${build_dir} ${install_dir}
 	cd ${build_dir}; cmake \
 		-Wdev -Werror=dev -Wdeprecated -Werror=deprecated \
-		-DCMAKE_INSTALL_PREFIX=../${install_dir} \
+		-DCMAKE_INSTALL_PREFIX=${install_dir} \
 		..
 	touch $@
 
