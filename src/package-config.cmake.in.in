@@ -2,7 +2,9 @@
 
 include(CMakeFindDependencyMacro)
 foreach(PACKAGE_NAME @PROJECT_DEPENDENCIES@)
-  find_dependency("${PACKAGE_NAME}")
+  # TODO: Pass along the rest of the options that were passed to
+  # `future_add_dependency`.
+  find_dependency("${PACKAGE_NAME}" REQUIRED)
 endforeach(PACKAGE_NAME @PROJECT_DEPENDENCIES@)
 
 if(NOT TARGET @PROJECT_NAME@::@PROJECT_NAME@)
