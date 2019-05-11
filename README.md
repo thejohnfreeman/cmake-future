@@ -165,7 +165,7 @@ future_get_names_with_file_suffix(<variable> <suffix>)
 future_get_names_with_file_suffix(MY_TESTS ".cpp")
 foreach(MY_TEST ${MY_TESTS})
   future_add_test_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
-  target_link_libraries(${MY_TEST} PRIVATE gtest::gtest)
+  target_link_libraries(${MY_TEST} gtest::gtest)
 endforeach(MY_TEST ${MY_TESTS})
 ```
 
@@ -207,9 +207,14 @@ future_install_project()
 future_add_dependency(PUBLIC Boost)
 future_add_dependency(PRIVATE GTest)
 
-add_library(my_library)
-install(TARGETS my_library EXPORT ${PROJECT_NAME}-targets)
-...
+future_add_library(my_library my_library.cpp)
+target_link_libraries(my_library PUBLIC Boost::Boost)
+
+future_add_test_executable(my_test my_test.cpp)
+target_link_libraries(my_library
+  ${PROJECT_NAME}::my_library
+  GTest::GTest
+)
 
 future_install_project()
 ```
