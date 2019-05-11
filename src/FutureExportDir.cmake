@@ -52,6 +52,13 @@ endif(NOT DEFINED CMAKE_INSTALL_PREFIX)
 # `CMAKE_INSTALL_PREFIX` can be found in the `CMAKE_SYSTEM_PREFIX_PATH`; if it
 # isn't, then `find_package` won't find our package configuration file.
 # TODO: Do we need to search in `CMAKE_PREFIX_PATH` as well?
+#
+# `CMAKE_SYSTEM_PREFIX_PATH` contains `CMAKE_INSTALL_PREFIX` by default.
+# Users should not modify `CMAKE_SYSTEM_PREFIX_PATH`, so if
+# `CMAKE_INSTALL_PREFIX` is missing, then someone is misbehaving.
+# https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_PREFIX_PATH.html
+# TODO: In light of this, do we need this search at all? Right now it serves
+# as a sanity check.
 list(FIND CMAKE_SYSTEM_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}" INDEX)
 if(INDEX LESS 0)
   message(WARNING
