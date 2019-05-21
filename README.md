@@ -224,9 +224,11 @@ the [best practices of Modern
 CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).
 
 - `future_add_dependency` works like `find_package`. `PUBLIC` dependencies
-  are imported by your package configuration file, so that your dependents
-  will transitively import them. `PRIVATE` dependencies are not. Good
-  candidates for `PRIVATE` dependencies are development dependencies like test
+  are imported by your package configuration file (using
+  [`find_dependency`](https://cmake.org/cmake/help/latest/module/CMakeFindDependencyMacro.html)),
+  so that your dependents will transitively import them. `PRIVATE`
+  dependencies are not. Good candidates for `PRIVATE` dependencies are
+  build-time-only dependencies like test
   frameworks. Dependencies are required by default; you can pass `OPTIONAL` if
   you want CMake to continue even when the dependency cannot be found. All
   remaining arguments will be passed through to
