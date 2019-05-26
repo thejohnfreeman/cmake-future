@@ -1,8 +1,8 @@
 # This Makefile exists just to assist development.
 # Do not treat it as a continuous integration test.
 
-build_dir := build
-install_dir := $(abspath prefix)
+build_dir := $(abspath .build)
+install_dir := $(abspath .install)
 
 ${install_dir} :
 	umask 0022; mkdir --parents ${install_dir}/lib/cmake
@@ -21,7 +21,10 @@ ${build_dir}/configured : CMakeLists.txt | ${build_dir} ${install_dir}
 
 configure : ${build_dir}/configured
 
-install : configure ${install_dir}
+build : configure
+	cd ${build_dir}; cmake --build .
+
+install : build ${install_dir}
 	cd ${build_dir}; cmake --build . --target install
 
 # Test that modules are installed complete and with the correct permissions.
@@ -48,6 +51,6 @@ test2 : install
 clean :
 	rm --recursive --force ${build_dir} ${install_dir}
 
-.PHONY : build install
+.PHONY : configure build install test1 test2 clean
 
 .DEFAULT_GOAL :=
