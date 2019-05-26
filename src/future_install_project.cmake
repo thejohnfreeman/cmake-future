@@ -58,7 +58,7 @@ function(future_install_project)
   configure_package_config_file(
     ${install_project_dir}/package-config.cmake.in
     ${project_export_dir}/${PROJECT_NAME}-config.cmake
-    INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${project_slug}"
+    INSTALL_DESTINATION "${FUTURE_INSTALL_EXPORTDIR}/${project_slug}"
   )
 
   write_basic_package_version_file(
@@ -69,6 +69,6 @@ function(future_install_project)
 
   install(
     DIRECTORY "${project_export_dir}"
-    DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
+    DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
   )
 endfunction()

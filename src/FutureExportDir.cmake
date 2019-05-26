@@ -1,9 +1,9 @@
-# This extension exports a variable, `CMAKE_INSTALL_EXPORTDIR`, that points to
-# the prefix where CMake package configuration files (and their corresponding
-# `<PackageName>-targets.cmake` *export* files) should be installed. It is on
-# the path where `find_package` searches for package configuration
-# files. It differs by platform, but it is derived from the installation
-# prefixes held in the variable `CMAKE_SYSTEM_PREFIX_PATH`.
+# This extension exports a variable, `FUTURE_INSTALL_EXPORTDIR`, that is
+# the absolute prefix where CMake package configuration files (and their
+# corresponding `<PackageName>-targets.cmake` *export* files) should be
+# installed. It is on the path where `find_package` searches for package
+# configuration files. It differs by platform, but it is derived from the
+# installation prefixes held in the variable `CMAKE_SYSTEM_PREFIX_PATH`.
 #
 # [package configuration file]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#package-configuration-file
 # [find_package]: https://cmake.org/cmake/help/latest/command/find_package.html
@@ -19,7 +19,7 @@
 # installation path. We must set a value that works with the intended usage:
 #
 #     install(FILES ${PROJECT_NAME}-config.cmake
-#       DESTINATION ${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}
+#       DESTINATION ${FUTURE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}
 #     )
 #
 # This installation path is useful for more than just package configuration
@@ -72,12 +72,12 @@ set(prefix "${CMAKE_INSTALL_PREFIX}")
 if(${UNIX})
   set(prefix "${prefix}/lib/cmake")
 endif()
-set(CMAKE_INSTALL_EXPORTDIR "${prefix}")
+set(FUTURE_INSTALL_EXPORTDIR "${prefix}")
 
-if(UNIX AND NOT IS_DIRECTORY "${CMAKE_INSTALL_EXPORTDIR}")
+if(UNIX AND NOT IS_DIRECTORY "${FUTURE_INSTALL_EXPORTDIR}")
   string(
     CONCAT msg
-    "CMake package directory (${CMAKE_INSTALL_EXPORTDIR}) does not exist.\n"
+    "CMake package directory (${FUTURE_INSTALL_EXPORTDIR}) does not exist.\n"
     "CMake will create it with your umask."
   )
   message(WARNING "${msg}")

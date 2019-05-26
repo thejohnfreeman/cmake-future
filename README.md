@@ -178,7 +178,7 @@ given `<variable>`.
 
 This extension is named `FutureExportDir` (modeled after
 [`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)),
-but its export is a variable named `CMAKE_INSTALL_EXPORTDIR`. Its value is one
+but its export is a variable named `FUTURE_INSTALL_EXPORTDIR`. Its value is one
 of the name-based paths searched by
 [`find_package`](https://cmake.org/cmake/help/latest/command/find_package.html)
 on your platform, i.e. a path to a directory containing subdirectories named
@@ -189,7 +189,7 @@ install(
   EXPORT ${PROJECT_NAME}_targets
   FILE ${PROJECT_NAME}-targets.cmake
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
+  DESTINATION "${FUTURE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
 ```
 

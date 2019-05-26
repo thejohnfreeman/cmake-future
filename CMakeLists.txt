@@ -49,7 +49,7 @@ write_basic_package_version_file(
 # Install the meta package.
 install(
   DIRECTORY "${PROJECT_EXPORT_DIR}"
-  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
+  DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
 )
 
 # The same file, plus a line that finds the meta package, can serve as

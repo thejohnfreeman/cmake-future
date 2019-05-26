@@ -48,13 +48,13 @@ foreach(PACKAGE_NAME ${PACKAGE_NAMES})
   )
   install(
     DIRECTORY "${PACKAGE_EXPORT_DIR}"
-    DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
+    DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
   )
 endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
 
 # Special case: the template for `install_project`.
 install(
   FILES package-config.cmake.in.in
-  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/future_install_project-${PROJECT_VERSION}"
+  DESTINATION "${FUTURE_INSTALL_EXPORTDIR}/future_install_project-${PROJECT_VERSION}"
   RENAME package-config.cmake.in
 )
