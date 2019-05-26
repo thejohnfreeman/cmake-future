@@ -89,7 +89,7 @@ sooner and helps experienced users avoid common pitfalls.
   the same syntax (`target_link_libraries(b project::a)`) whether `b` is in
   the same project or in another project.
 - All exported targets should be added to the **Default Export Set** called
-  `${PROJECT_NAME}-targets`.
+  `${PROJECT_NAME}_targets`.
 
 
 ## Modules
@@ -185,7 +185,8 @@ on your platform, i.e. a path to a directory containing subdirectories named
 for installed packages.
 
 ```cmake
-install(EXPORT ${PROJECT_NAME}-targets
+install(
+  EXPORT ${PROJECT_NAME}_targets
   FILE ${PROJECT_NAME}-targets.cmake
   NAMESPACE ${PROJECT_NAME}::
   DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
@@ -238,7 +239,7 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
   `CMakeLists.txt`, much like you where you would put `#include`s or `import`
   statements in a program, and for the same reasons. Before calling the next
   and last function, remember to add any targets you want to the [Default
-  Export Set](#conventions) (`${PROJECT_NAME}-targets`).
+  Export Set](#conventions) (`${PROJECT_NAME}_targets`).
 
 - `future_install_project` installs your project. It creates a [package
   configuration

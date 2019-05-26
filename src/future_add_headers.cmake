@@ -28,7 +28,7 @@ function(future_add_headers target)
       $<BUILD_INTERFACE:${arg_DIRECTORY}>
       $<INSTALL_INTERFACE:${arg_DESTINATION}>
   )
-  install(TARGETS ${target} EXPORT ${PROJECT_NAME}-targets)
+  install(TARGETS ${target} EXPORT ${PROJECT_NAME}_targets)
   install(
     # This trailing slash ensures we install the contents of the directory,
     # not the directory itself.

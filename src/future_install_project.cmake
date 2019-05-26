@@ -47,7 +47,7 @@ function(future_install_project)
   set(project_export_dir "${CMAKE_BINARY_DIR}/${project_slug}")
 
   install(
-    EXPORT ${PROJECT_NAME}-targets
+    EXPORT ${PROJECT_NAME}_targets
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
     DESTINATION "${project_export_dir}"
