@@ -166,7 +166,7 @@ future_get_names_with_file_suffix(MY_TESTS ".cpp")
 foreach(MY_TEST ${MY_TESTS})
   future_add_test_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
   target_link_libraries(${MY_TEST} gtest::gtest)
-endforeach(MY_TEST ${MY_TESTS})
+endforeach()
 ```
 
 This will search the current source directory for files with the given suffix,

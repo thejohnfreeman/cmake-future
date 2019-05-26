@@ -4,37 +4,37 @@ include(GNUInstallDirs)
 # Should we instead use the PUBLIC_HEADER property of a library target?
 # https://cmake.org/cmake/help/latest/command/install.html#installing-targets
 
-function(future_add_headers TARGET)
+function(future_add_headers target)
   # No Boolean options or multi-value parameters.
   # Just two single-value parameters: `DIRECTORY` and `DESTINATION`.
-  cmake_parse_arguments(ARG "" "DIRECTORY;DESTINATION" "" ${ARGN})
+  cmake_parse_arguments(arg "" "DIRECTORY;DESTINATION" "" ${ARGN})
   # Set default arguments.
-  if("${ARG_DIRECTORY}" STREQUAL "")
-    set(ARG_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  if("${arg_DIRECTORY}" STREQUAL "")
+    set(arg_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
-  if("${ARG_DESTINATION}" STREQUAL "")
-    set(ARG_DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  if("${arg_DESTINATION}" STREQUAL "")
+    set(arg_DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
   endif()
 
   # `DIRECTORY` must be absolute.
-  if(NOT IS_ABSOLUTE "${ARG_DIRECTORY}")
-    set(ARG_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${ARG_DIRECTORY}")
+  if(NOT IS_ABSOLUTE "${arg_DIRECTORY}")
+    set(arg_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${arg_DIRECTORY}")
   endif()
 
-  add_library(${TARGET} INTERFACE)
-  add_library(${PROJECT_NAME}::${TARGET} ALIAS ${TARGET})
-  target_include_directories(${TARGET}
+  add_library(${target} INTERFACE)
+  add_library(${PROJECT_NAME}::${target} ALIAS ${target})
+  target_include_directories(${target}
     INTERFACE
-      $<BUILD_INTERFACE:${ARG_DIRECTORY}>
-      $<INSTALL_INTERFACE:${ARG_DESTINATION}>
+      $<BUILD_INTERFACE:${arg_DIRECTORY}>
+      $<INSTALL_INTERFACE:${arg_DESTINATION}>
   )
-  install(TARGETS ${TARGET} EXPORT ${PROJECT_NAME}-targets)
+  install(TARGETS ${target} EXPORT ${PROJECT_NAME}-targets)
   install(
     # This trailing slash ensures we install the contents of the directory,
     # not the directory itself.
-    DIRECTORY ${ARG_DIRECTORY}/
-    DESTINATION ${ARG_DESTINATION}
+    DIRECTORY ${arg_DIRECTORY}/
+    DESTINATION ${arg_DESTINATION}
     # Do not install CMakeLists.txt.
     FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
   )
-endfunction(future_add_headers TARGET)
+endfunction()

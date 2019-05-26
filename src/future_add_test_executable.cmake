@@ -1,14 +1,14 @@
 # https://stackoverflow.com/a/10824578/618906
-function(future_add_test_executable TARGET)
-  add_executable(${TARGET} ${ARGN})
+function(future_add_test_executable target)
+  add_executable(${target} ${ARGN})
   add_test(
-    NAME ${TARGET}_build
+    NAME ${target}_build
     COMMAND
       ${CMAKE_COMMAND}
         --build ${CMAKE_BINARY_DIR}
-        --target ${TARGET}
+        --target ${target}
         --config $<CONFIG>
     )
-  add_test(NAME ${TARGET} COMMAND ${TARGET})
-  set_tests_properties(${TARGET} PROPERTIES DEPENDS ${TARGET}_build)
-endfunction(future_add_test_executable TARGET)
+  add_test(NAME ${target} COMMAND ${target})
+  set_tests_properties(${target} PROPERTIES DEPENDS ${target}_build)
+endfunction()

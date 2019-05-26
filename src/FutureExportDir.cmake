@@ -34,18 +34,18 @@ if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   # Unless we join these into the same message, they get separated by a stack
   # trace, which is a bad user experience.
   set(
-    MSG "CMAKE_INSTALL_PREFIX must be defined to use the ExportDir module.\n"
+    msg "CMAKE_INSTALL_PREFIX must be defined to use the ExportDir module.\n"
   )
   if(DEFINED CMAKE_SCRIPT_MODE_FILE)
     set(
-      MSG ${MSG}
+      msg ${msg}
       "NOTE: CMAKE_INSTALL_PREFIX is not defined by default when you run "
       "CMake in script mode (-P)."
     )
-  endif(DEFINED CMAKE_SCRIPT_MODE_FILE)
-  message(SEND_ERROR ${MSG})
+  endif()
+  message(SEND_ERROR ${msg})
   return()
-endif(NOT DEFINED CMAKE_INSTALL_PREFIX)
+endif()
 
 # Package configuration files (`<package>-config.cmake`) should be installed
 # like any other file: under `CMAKE_INSTALL_PREFIX`. We check that the
@@ -66,21 +66,21 @@ if(INDEX LESS 0)
     " CMAKE_INSTALL_PREFIX=\"${CMAKE_INSTALL_PREFIX}\"\n"
     " CMAKE_SYSTEM_PREFIX_PATH=\"${CMAKE_SYSTEM_PREFIX_PATH}\""
   )
-endif(INDEX LESS 0)
-
-set(PREFIX "${CMAKE_INSTALL_PREFIX}")
-if(${UNIX})
-  set(PREFIX "${PREFIX}/lib/cmake")
 endif()
-set(CMAKE_INSTALL_EXPORTDIR "${PREFIX}")
+
+set(prefix "${CMAKE_INSTALL_PREFIX}")
+if(${UNIX})
+  set(prefix "${prefix}/lib/cmake")
+endif()
+set(CMAKE_INSTALL_EXPORTDIR "${prefix}")
 
 if(UNIX AND NOT IS_DIRECTORY "${CMAKE_INSTALL_EXPORTDIR}")
   string(
-    CONCAT MSG
+    CONCAT msg
     "CMake package directory (${CMAKE_INSTALL_EXPORTDIR}) does not exist.\n"
     "CMake will create it with your umask."
   )
-  message(WARNING "${MSG}")
-endif(UNIX AND NOT IS_DIRECTORY "${CMAKE_INSTALL_EXPORTDIR}")
+  message(WARNING "${msg}")
+endif()
 
 # TODO: Should we just create the directory for them?

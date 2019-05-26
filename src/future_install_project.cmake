@@ -10,7 +10,7 @@
 # of `find_package`, and finish their installation with `install_project`.
 
 find_package(FutureExportDir REQUIRED)
-set(install_project_DIR "${CMAKE_CURRENT_LIST_DIR}")
+set(install_project_dir "${CMAKE_CURRENT_LIST_DIR}")
 
 # TODO: Remember the arguments passed to `project_dependency` and pass them to
 # `find_dependency` in the package configuration file.
@@ -18,19 +18,19 @@ function(future_add_dependency SCOPE PACKAGE_NAME)
   # One Boolean option: `OPTIONAL`.
   # (One forbidden option: `REQUIRED`. See below.)
   # No single- or multi-value parameters.
-  cmake_parse_arguments(ARG "OPTIONAL;REQUIRED" "" "" ${ARGN})
+  cmake_parse_arguments(arg "OPTIONAL;REQUIRED" "" "" ${ARGN})
 
-  if(ARG_REQUIRED)
+  if(arg_REQUIRED)
     message(SEND_ERROR "Dependencies are required by default. `REQUIRED` is not an option for ${PACKAGE_NAME}.")
   endif()
 
-  if(ARG_OPTIONAL)
-    set(ARG_REQUIRED "")
+  if(arg_OPTIONAL)
+    set(arg_REQUIRED "")
   else()
-    set(ARG_REQUIRED "REQUIRED")
+    set(arg_REQUIRED "REQUIRED")
   endif()
 
-  find_package("${PACKAGE_NAME}" ${ARG_REQUIRED} ${ARG_UNPARSED_ARGUMENTS})
+  find_package("${PACKAGE_NAME}" ${arg_REQUIRED} ${arg_UNPARSED_ARGUMENTS})
 
   if("${SCOPE}" STREQUAL PUBLIC)
     # TODO: Could we set a property on the project?
@@ -40,35 +40,35 @@ function(future_add_dependency SCOPE PACKAGE_NAME)
   else()
     message(SEND_ERROR "Unknown scope for dependency ${PACKAGE_NAME}: ${SCOPE}")
   endif()
-endfunction(future_add_dependency)
+endfunction()
 
 function(future_install_project)
-  set(PROJECT_SLUG "${PROJECT_NAME}-${PROJECT_VERSION}")
-  set(PROJECT_EXPORT_DIR "${CMAKE_BINARY_DIR}/${PROJECT_SLUG}")
+  set(project_slug "${PROJECT_NAME}-${PROJECT_VERSION}")
+  set(project_export_dir "${CMAKE_BINARY_DIR}/${project_slug}")
 
   install(
     EXPORT ${PROJECT_NAME}-targets
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
-    DESTINATION "${PROJECT_EXPORT_DIR}"
+    DESTINATION "${project_export_dir}"
   )
 
   include(CMakePackageConfigHelpers)
 
   configure_package_config_file(
-    ${install_project_DIR}/package-config.cmake.in
-    ${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake
-    INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_SLUG}"
+    ${install_project_dir}/package-config.cmake.in
+    ${project_export_dir}/${PROJECT_NAME}-config.cmake
+    INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${project_slug}"
   )
 
   write_basic_package_version_file(
-    ${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake
+    ${project_export_dir}/${PROJECT_NAME}-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
   )
 
   install(
-    DIRECTORY "${PROJECT_EXPORT_DIR}"
+    DIRECTORY "${project_export_dir}"
     DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
   )
-endfunction(future_install_project)
+endfunction()
