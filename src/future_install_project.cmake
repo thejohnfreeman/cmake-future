@@ -6,6 +6,7 @@
 # https://cliutils.gitlab.io/modern-cmake/chapters/install/installing.html
 
 find_extension(FutureExportDir)
+find_extension(future_export_sets)
 
 set(extension_dir "${CMAKE_CURRENT_LIST_DIR}")
 
@@ -48,7 +49,7 @@ function(future_install_project)
   set(cmake_build_exportdir "${CMAKE_BINARY_DIR}/${project_slug}")
 
   install(
-    EXPORT ${PROJECT_NAME}_targets
+    EXPORT ${FUTURE_DEFAULT_EXPORT_SET}
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
     DESTINATION "${cmake_build_exportdir}"

@@ -94,8 +94,39 @@ sooner and helps experienced users avoid common pitfalls.
 
 ## Modules
 
-The headers below link to their module file so that you can double-check its
-implementation.
+The section headings below link to their corresponding module file so that you
+can double-check its implementation.
+
+
+### [`future_export_sets`](./src/future_export_sets.cmake)
+
+```cmake
+${FUTURE_DEFAULT_EXPORT_SET}
+future_install(...)
+future_get_export_set(<variable> [<name>])
+```
+
+```cmake
+future_get_export_set(export_set ${FUTURE_DEFAULT_EXPORT_SET})
+```
+
+This extension exports a few pieces:
+
+- A variable `FUTURE_DEFAULT_EXPORT_SET` with the value
+  `${PROJECT_NAME}_targets`. The sibling extensions `future_add_headers` and
+  `future_add_library` will add their installed targets to this export set.
+  The sibling extension `future_install_project` uses this export set for the
+  package's [export
+  file](https://cmake.org/cmake/help/latest/command/install.html#export).
+- A function `future_install` that wraps the built-in
+  [`install`](https://cmake.org/cmake/help/latest/command/install.html) but
+  records the targets added to each export set. You only need to use this
+  function for the `future_install(TARGETS <target>... EXPORT <export-set>)`
+  form, but it won't hurt to use it for every form. (This function cannot be
+  named `install` because it is presently impossible to safely call an
+  overridden function.)
+- A function `future_get_export_set` that will get the list of targets in the
+  export set `<name>` and store it in `<variable>`.
 
 
 ### [`future_add_headers`](./src/future_add_headers.cmake)

@@ -1,6 +1,8 @@
 include(CMakeParseArguments)
 include(GNUInstallDirs)
 
+find_extension(future_export_sets)
+
 # Should we instead use the PUBLIC_HEADER property of a library target?
 # https://cmake.org/cmake/help/latest/command/install.html#installing-targets
 
@@ -28,7 +30,7 @@ function(future_add_headers target)
       $<BUILD_INTERFACE:${arg_DIRECTORY}>
       $<INSTALL_INTERFACE:${arg_DESTINATION}>
   )
-  install(TARGETS ${target} EXPORT ${PROJECT_NAME}_targets)
+  future_install(TARGETS ${target} EXPORT ${PROJECT_NAME}_targets)
   install(
     # This trailing slash ensures we install the contents of the directory,
     # not the directory itself.
