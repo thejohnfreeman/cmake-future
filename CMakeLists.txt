@@ -10,7 +10,7 @@ endmacro()
 add_subdirectory(src)
 # Use properties of targets instead of setting variables that cross scope
 # boundaries.
-get_target_property(PACKAGE_NAMES packages MANUALLY_ADDED_DEPENDENCIES)
+get_target_property(package_names packages MANUALLY_ADDED_DEPENDENCIES)
 
 # We need to install our extensions as packages into a location searched by
 # `find_package`. The exact path depends on the platform. We use a switch on
@@ -24,48 +24,50 @@ find_extension(FutureExportDir)
 # for every extension, then we use `configure_file` to write those lines to
 # a new file.
 set(
-  PROJECT_EXPORT_DIR
+  cmake_build_exportdir
   "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
-set(TEXT "include(CMakeFindDependencyMacro)\n")
-foreach(PACKAGE_NAME ${PACKAGE_NAMES})
+set(text "include(CMakeFindDependencyMacro)\n")
+
+foreach(package_name ${package_names})
   # `find_dependency` forwards the arguments from the `find_package` call that
   # found this package configuration file.
   # https://cmake.org/cmake/help/latest/module/CMakeFindDependencyMacro.html
   string(
-    APPEND TEXT
-    "find_dependency(${PACKAGE_NAME} ${PROJECT_VERSION} EXACT REQUIRED)\n"
+    APPEND text
+    "find_dependency(${package_name} ${PROJECT_VERSION} EXACT REQUIRED)\n"
   )
-endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
-set(PACKAGE_NAME ${PROJECT_NAME})
+endforeach()
+
+set(package_name ${PROJECT_NAME})
 configure_file(
   cmake/package-config.cmake.in
-  "${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
+  "${cmake_build_exportdir}/${PROJECT_NAME}-config.cmake"
   @ONLY
 )
 
 write_basic_package_version_file(
-  "${PROJECT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake"
+  "${cmake_build_exportdir}/${PROJECT_NAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
 # Install the meta package.
 install(
-  DIRECTORY "${PROJECT_EXPORT_DIR}"
+  DIRECTORY "${cmake_build_exportdir}"
   DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
 )
 
 # The same file, plus a line that finds the meta package, can serve as
 # a `CMakeLists.txt` for a project to test that our installation worked.
 string(
-  CONCAT TEXT
+  CONCAT text
   "cmake_minimum_required(VERSION 3.0)\n"
   "project(test LANGUAGES)\n"
-  "${TEXT}"
+  "${text}"
   "find_package(${PROJECT_NAME} ${PROJECT_VERSION} EXACT REQUIRED)\n"
 )
-file(WRITE "${CMAKE_BINARY_DIR}/test/CMakeLists.txt" "${TEXT}")
+file(WRITE "${CMAKE_BINARY_DIR}/test/CMakeLists.txt" "${text}")
 
 enable_testing()
 

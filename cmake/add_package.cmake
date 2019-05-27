@@ -1,2 +1,2 @@
-file(READ "${INPUT}" TEXT)
-configure_file(package-config.cmake.in "${OUTPUT}" @ONLY)
+file(READ "${input}" text)
+configure_file(package-config.cmake.in "${output}" @ONLY)

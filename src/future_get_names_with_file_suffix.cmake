@@ -1,14 +1,11 @@
 # Example
 # -------
 #
-#     get_names_with_file_suffix(test_names ".cpp")
-#     foreach(test_name ${test_names})
-#       add_executable("${test_name}" EXCLUDE_FROM_ALL "${test_name}.cpp")
-#       target_link_libraries("${test_name}"
-#         PRIVATE
-#           boost::boost
-#       )
-#       add_test_from_target("${test_name}")
+#     get_names_with_file_suffix(tests ".cpp")
+#     foreach(test ${tests})
+#       add_executable(${test} EXCLUDE_FROM_ALL ${test}.cpp)
+#       target_link_libraries(${test} doctest::doctest)
+#       add_test_from_target(${test})
 #     endforeach()
 #
 function(future_get_names_with_file_suffix variable suffix)

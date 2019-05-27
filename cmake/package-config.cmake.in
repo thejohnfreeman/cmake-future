@@ -1,11 +1,11 @@
-if(@PACKAGE_NAME@_FOUND)
+if(@package_name@_FOUND)
   return()
-endif(@PACKAGE_NAME@_FOUND)
+endif(@package_name@_FOUND)
 
 macro(find_extension name)
   find_package(${name} @PROJECT_VERSION@ EXACT REQUIRED)
 endmacro()
 
-@TEXT@
+@text@
 
-message(STATUS "Found: @PROJECT_VERSION@ @PACKAGE_NAME@")
+message(STATUS "Found: @PROJECT_VERSION@ @package_name@")

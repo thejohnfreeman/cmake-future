@@ -162,10 +162,10 @@ future_get_names_with_file_suffix(<variable> <suffix>)
 ```
 
 ```cmake
-future_get_names_with_file_suffix(MY_TESTS ".cpp")
-foreach(MY_TEST ${MY_TESTS})
-  future_add_test_executable(${MY_TEST} EXCLUDE_FROM_ALL ${MY_TEST}.cpp)
-  target_link_libraries(${MY_TEST} gtest::gtest)
+future_get_names_with_file_suffix(tests ".cpp")
+foreach(test ${tests})
+  future_add_test_executable(${test} EXCLUDE_FROM_ALL ${test}.cpp)
+  target_link_libraries(${test} doctest::doctest)
 endforeach()
 ```
 
@@ -206,15 +206,15 @@ future_install_project()
 
 ```cmake
 future_add_dependency(PUBLIC Boost)
-future_add_dependency(PRIVATE GTest)
+future_add_dependency(PRIVATE doctest)
 
 future_add_library(my_library my_library.cpp)
 target_link_libraries(my_library PUBLIC Boost::Boost)
 
 future_add_test_executable(my_test my_test.cpp)
-target_link_libraries(my_library
+target_link_libraries(my_test
   ${PROJECT_NAME}::my_library
-  GTest::GTest
+  doctest::doctest
 )
 
 future_install_project()

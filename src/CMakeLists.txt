@@ -1,56 +1,56 @@
+include(CMakePackageConfigHelpers)
+
 find_extension(future_get_names_with_file_suffix)
 find_extension(FutureExportDir)
 
 # Every `.cmake` file is an extension. Get a list of their names.
-future_get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
-
-include(CMakePackageConfigHelpers)
+future_get_names_with_file_suffix(package_names ".cmake")
 
 add_custom_target(packages ALL)
 
 # Install every extension as a package.
-foreach(PACKAGE_NAME ${PACKAGE_NAMES})
+foreach(package_name ${package_names})
   set(
-    PACKAGE_EXPORT_DIR
-    "${CMAKE_BINARY_DIR}/cmake/${PACKAGE_NAME}-${PROJECT_VERSION}"
+    cmake_build_exportdir
+    "${CMAKE_BINARY_DIR}/cmake/${package_name}-${PROJECT_VERSION}"
   )
-  string(TOLOWER ${PACKAGE_NAME} PACKAGE_NAME_LOWER)
-  set(INPUT "${CMAKE_CURRENT_SOURCE_DIR}/${PACKAGE_NAME}.cmake")
-  set(OUTPUT "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config.cmake")
+  string(TOLOWER ${package_name} package_name_lower)
+  set(input "${CMAKE_CURRENT_SOURCE_DIR}/${package_name}.cmake")
+  set(output "${cmake_build_exportdir}/${package_name_lower}-config.cmake")
   add_custom_command(
-    OUTPUT "${OUTPUT}"
+    OUTPUT "${output}"
     COMMAND
       "${CMAKE_COMMAND}"
-      "-DINPUT=${INPUT}"
-      "-DOUTPUT=${OUTPUT}"
-      "-DPACKAGE_NAME=${PACKAGE_NAME}"
+      "-Dinput=${input}"
+      "-Doutput=${output}"
+      "-Dpackage_name=${package_name}"
       "-DPROJECT_VERSION=${PROJECT_VERSION}"
       -P add_package.cmake
     # `configure_file` will not touch its destination unless the output is
     # different. We want to update the build time unconditionally.
-    COMMAND "${CMAKE_COMMAND}" -E touch "${OUTPUT}"
+    COMMAND "${CMAKE_COMMAND}" -E touch "${output}"
     DEPENDS
-      "${INPUT}"
+      "${input}"
       "${CMAKE_SOURCE_DIR}/cmake/package-config.cmake.in"
       "${CMAKE_SOURCE_DIR}/cmake/add_package.cmake"
     # Let the `add_package` module assume it is working in its directory.
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/cmake"
   )
-  add_custom_target(${PACKAGE_NAME} DEPENDS "${OUTPUT}")
-  add_dependencies(packages ${PACKAGE_NAME})
+  add_custom_target(${package_name} DEPENDS "${output}")
+  add_dependencies(packages ${package_name})
   # The package version file is always created with mode 0644. We only need to
   # re-generate it when the project version changes, and CMake implicitly
   # tracks a dependency between it and this `CMakeLists.txt`.
   write_basic_package_version_file(
-    "${PACKAGE_EXPORT_DIR}/${PACKAGE_NAME_LOWER}-config-version.cmake"
+    "${cmake_build_exportdir}/${package_name_lower}-config-version.cmake"
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
   )
   install(
-    DIRECTORY "${PACKAGE_EXPORT_DIR}"
+    DIRECTORY "${cmake_build_exportdir}"
     DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
   )
-endforeach(PACKAGE_NAME ${PACKAGE_NAMES})
+endforeach()
 
 # Special case: the template for `install_project`.
 install(
