@@ -205,6 +205,23 @@ extract their filenames (minus the suffix), and collect them as a list in the
 given `<variable>`.
 
 
+### [`future_get_targets`](./src/future_get_targets.cmake)
+
+```cmake
+future_get_targets(<variable> [<directory>])
+```
+
+Get a list of all the targets defined in `<directory>` or its subdirectories
+and store it in `<variable>`. If no `<directory>` is given, the current
+directory will be used. The list does not include any [Imported
+Targets](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)
+or [Alias
+Targets](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#alias-targets).
+This is built on top of
+[`BUILDSYSTEM_TARGETS`](https://cmake.org/cmake/help/latest/prop_dir/BUILDSYSTEM_TARGETS.html)
+and thus subject to all of the same limitations.
+
+
 ### [`FutureExportDir`](./src/FutureExportDir.cmake)
 
 This extension is named `FutureExportDir` (modeled after
@@ -226,23 +243,6 @@ install(
 
 (This example is based on [this pattern for writing package
 exports](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).)
-
-
-### [`future_get_targets`](./src/future_get_targets.cmake)
-
-```cmake
-future_get_targets(<variable> [<directory>])
-```
-
-Get a list of all the targets defined in `<directory>` or its subdirectories
-and store it in `<variable>`. If no `<directory>` is given, the current
-directory will be used. The list does not include any [Imported
-Targets](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#imported-targets)
-or [Alias
-Targets](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#alias-targets).
-This is built on top of
-[`BUILDSYSTEM_TARGETS`](https://cmake.org/cmake/help/latest/prop_dir/BUILDSYSTEM_TARGETS.html)
-and thus subject to all of the same limitations.
 
 
 ### [`future_install_project`](./src/future_install_project.cmake)
