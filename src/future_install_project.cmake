@@ -27,10 +27,11 @@ function(future_add_dependency scope package_name)
 
   find_package("${package_name}" ${arg_REQUIRED} ${arg_UNPARSED_ARGUMENTS})
 
-  if("${SCOPE}" STREQUAL PUBLIC)
-    # TODO: Could we set a property on the project?
-    set(PROJECT_DEPENDENCIES ${PROJECT_DEPENDENCIES} "${PACKAGE_NAME}" PARENT_SCOPE)
-  elseif("${SCOPE}" STREQUAL PRIVATE)
+  if("${scope}" STREQUAL PUBLIC)
+    get_property(dependencies GLOBAL PROPERTY FUTURE_PROJECT_DEPENDENCIES)
+    list(APPEND dependencies ${package_name})
+    set_property(GLOBAL PROPERTY FUTURE_PROJECT_DEPENDENCIES "${dependencies}")
+  elseif("${scope}" STREQUAL PRIVATE)
     # Ok.
   else()
     message(SEND_ERROR "Unknown scope for dependency ${package_name}: ${scope}")
@@ -55,6 +56,7 @@ function(future_install_project)
 
   include(CMakePackageConfigHelpers)
 
+  get_property(dependencies GLOBAL PROPERTY FUTURE_PROJECT_DEPENDENCIES)
   configure_package_config_file(
     "${extension_dir}/package-config.cmake.in"
     "${cmake_build_exportdir}/${PROJECT_NAME}-config.cmake"

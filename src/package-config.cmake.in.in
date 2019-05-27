@@ -1,7 +1,7 @@
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
-foreach(PACKAGE_NAME @PROJECT_DEPENDENCIES@)
+foreach(package_name @dependencies@)
   # TODO: Pass along the rest of the options that were passed to
   # `future_add_dependency`.
   find_dependency("${package_name}" REQUIRED)
