@@ -9,7 +9,7 @@
 # `project_dependency` (named in the fashion of `target_<property>`) instead
 # of `find_package`, and finish their installation with `install_project`.
 
-find_package(FutureExportDir REQUIRED)
+find_extension(FutureExportDir)
 set(install_project_dir "${CMAKE_CURRENT_LIST_DIR}")
 
 # TODO: Remember the arguments passed to `project_dependency` and pass them to

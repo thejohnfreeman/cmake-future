@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.1)
 # No languages, not even C/C++, the defaults.
 project(future VERSION 1.0.5 LANGUAGES)
 
+macro(find_extension name)
+  include("${CMAKE_SOURCE_DIR}/src/${name}.cmake")
+endmacro()
+
 add_subdirectory(src)
 # Use properties of targets instead of setting variables that cross scope
 # boundaries.
@@ -13,7 +17,7 @@ get_target_property(PACKAGE_NAMES packages MANUALLY_ADDED_DEPENDENCIES)
 # platform (`UNIX` and `WIN32`) to choose the right installation path. In
 # fact, we package that switch as one of the extensions that we install, and
 # we just import it here.
-include(src/FutureExportDir.cmake)
+find_extension(FutureExportDir)
 
 # Create a meta package named after this project that imports every extension
 # using `find_dependency`. We build a string that has a `find_dependency` line

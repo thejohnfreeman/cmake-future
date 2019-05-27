@@ -1,5 +1,5 @@
-include(future_get_names_with_file_suffix.cmake)
-include(FutureExportDir.cmake)
+find_extension(future_get_names_with_file_suffix)
+find_extension(FutureExportDir)
 
 # Every `.cmake` file is an extension. Get a list of their names.
 future_get_names_with_file_suffix(PACKAGE_NAMES ".cmake")
