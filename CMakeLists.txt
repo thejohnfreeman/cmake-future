@@ -1,7 +1,7 @@
 # https://cliutils.gitlab.io/modern-cmake/chapters/intro/newcmake.html
 cmake_minimum_required(VERSION 3.1)
 # No languages, not even C/C++, the defaults.
-project(future VERSION 1.0.5 LANGUAGES)
+project(future VERSION 2.0.0 LANGUAGES)
 
 macro(find_extension name)
   include("${CMAKE_SOURCE_DIR}/src/${name}.cmake")
