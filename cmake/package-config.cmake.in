@@ -1,3 +1,7 @@
+# This package configuration file was generated for an extension from
+# `cmake-future`:
+# https://github.com/thejohnfreeman/cmake-future
+
 if(@package_name@_FOUND)
   return()
 endif(@package_name@_FOUND)
