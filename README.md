@@ -225,8 +225,8 @@ and thus subject to all of the same limitations.
 ### [`FutureInstallDirs`](./src/FutureInstallDirs.cmake)
 
 ```cmake
-${FUTURE_INSTALL_CONFIGDIR}
-${FUTURE_INSTALL_FULL_CONFIGDIR}
+${FUTURE_INSTALL_PACKAGEDIR}
+${FUTURE_INSTALL_FULL_PACKAGEDIR}
 ```
 
 This extension is modeled after
@@ -244,17 +244,17 @@ Like `GNUInstallDirs`, there are two versions of each variable:
 
 where `<dir>` is one of:
 
-- `CONFIGDIR`: One of the `<name>*`-based paths searched by
-  [`find_package`](https://cmake.org/cmake/help/latest/command/find_package.html)
-  on your platform, i.e. a path to a directory containing subdirectories named
-  for installed packages.
+- `PACKAGEDIR`: A relative path that can be sandwiched between the default
+  `CMAKE_INSTALL_PREFIX` and a directory name starting with `${PROJECT_NAME}`
+  to yield one of the paths on the default search path for `find_package`.
+  ([Read more.](./src/FUTURE_INSTALL_PACKAGEDIR.md))
 
 ```cmake
 install(
   EXPORT ${PROJECT_NAME}_targets
   FILE ${PROJECT_NAME}-targets.cmake
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${FUTURE_INSTALL_CONFIGDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
+  DESTINATION "${FUTURE_INSTALL_PACKAGEDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
 ```
 

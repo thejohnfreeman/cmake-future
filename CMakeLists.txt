@@ -55,7 +55,7 @@ write_basic_package_version_file(
 # Install the meta package.
 install(
   DIRECTORY "${package_configuration_directory}"
-  DESTINATION "${FUTURE_INSTALL_CONFIGDIR}"
+  DESTINATION "${FUTURE_INSTALL_PACKAGEDIR}"
 )
 
 # The same file, plus a line that finds the meta package, can serve as

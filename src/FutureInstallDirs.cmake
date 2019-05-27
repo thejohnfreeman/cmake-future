@@ -36,27 +36,27 @@ if(INDEX LESS 0)
   )
 endif()
 
-set(configdir "lib/cmake")
+set(packagedir "lib/cmake")
 if(WIN32)
-  set(configdir ".")
+  set(packagedir ".")
 endif()
 set(
-  FUTURE_INSTALL_CONFIGDIR
-  "${configdir}"
+  FUTURE_INSTALL_PACKAGEDIR
+  "${packagedir}"
   CACHE STRING
   "`DESTINATION` to `install` package configuration directories."
 )
 set(
-  FUTURE_INSTALL_FULL_CONFIGDIR
-  "${CMAKE_INSTALL_PREFIX}/${FUTURE_INSTALL_CONFIGDIR}"
+  FUTURE_INSTALL_FULL_PACKAGEDIR
+  "${CMAKE_INSTALL_PREFIX}/${FUTURE_INSTALL_PACKAGEDIR}"
   CACHE STRING
-  "Absolute path corresponding to `FUTURE_INSTALL_CONFIGDIR`."
+  "Absolute path corresponding to `FUTURE_INSTALL_PACKAGEDIR`."
 )
 
-if(UNIX AND NOT IS_DIRECTORY "${FUTURE_INSTALL_FULL_CONFIGDIR}")
+if(UNIX AND NOT IS_DIRECTORY "${FUTURE_INSTALL_FULL_PACKAGEDIR}")
   string(
     CONCAT msg
-    "CMake package directory (${FUTURE_INSTALL_FULL_CONFIGDIR}) does not exist.\n"
+    "CMake package directory (${FUTURE_INSTALL_FULL_PACKAGEDIR}) does not exist.\n"
     "CMake will create it with your umask."
   )
   message(WARNING "${msg}")
