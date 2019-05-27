@@ -17,14 +17,14 @@ get_target_property(package_names packages MANUALLY_ADDED_DEPENDENCIES)
 # platform (`UNIX` and `WIN32`) to choose the right installation path. In
 # fact, we package that switch as one of the extensions that we install, and
 # we just import it here.
-find_extension(FutureExportDir)
+find_extension(FutureInstallDirs)
 
 # Create a meta package named after this project that imports every extension
 # using `find_dependency`. We build a string that has a `find_dependency` line
 # for every extension, then we use `configure_file` to write those lines to
 # a new file.
 set(
-  cmake_build_exportdir
+  package_configuration_directory
   "${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
 set(text "include(CMakeFindDependencyMacro)\n")
@@ -42,20 +42,20 @@ endforeach()
 set(package_name ${PROJECT_NAME})
 configure_file(
   cmake/package-config.cmake.in
-  "${cmake_build_exportdir}/${PROJECT_NAME}-config.cmake"
+  "${package_configuration_directory}/${PROJECT_NAME}-config.cmake"
   @ONLY
 )
 
 write_basic_package_version_file(
-  "${cmake_build_exportdir}/${PROJECT_NAME}-config-version.cmake"
+  "${package_configuration_directory}/${PROJECT_NAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
 # Install the meta package.
 install(
-  DIRECTORY "${cmake_build_exportdir}"
-  DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
+  DIRECTORY "${package_configuration_directory}"
+  DESTINATION "${FUTURE_INSTALL_CONFIGDIR}"
 )
 
 # The same file, plus a line that finds the meta package, can serve as

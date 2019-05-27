@@ -222,22 +222,39 @@ This is built on top of
 and thus subject to all of the same limitations.
 
 
-### [`FutureExportDir`](./src/FutureExportDir.cmake)
+### [`FutureInstallDirs`](./src/FutureInstallDirs.cmake)
 
-This extension is named `FutureExportDir` (modeled after
-[`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html)),
-but its export is a variable named `FUTURE_INSTALL_EXPORTDIR`. Its value is one
-of the name-based paths searched by
-[`find_package`](https://cmake.org/cmake/help/latest/command/find_package.html)
-on your platform, i.e. a path to a directory containing subdirectories named
-for installed packages.
+```cmake
+${FUTURE_INSTALL_CONFIGDIR}
+${FUTURE_INSTALL_FULL_CONFIGDIR}
+```
+
+This extension is modeled after
+[`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html),
+and it exports "missing" variables.
+Like `GNUInstallDirs`, there are two versions of each variable:
+
+- `FUTURE_INSTALL_<dir>`: A relative path suitable as the `DESTINATION`
+  argument to an
+  [`install`](https://cmake.org/cmake/help/latest/command/install.html)
+  command.
+
+- `FUTURE_INSTALL_FULL_<dir>`: An absoluate path constructed by appending the
+  corresponding `FUTURE_INSTALL_<dir>` to `CMAKE_INSTALL_PREFIX`.
+
+where `<dir>` is one of:
+
+- `CONFIGDIR`: One of the `<name>*`-based paths searched by
+  [`find_package`](https://cmake.org/cmake/help/latest/command/find_package.html)
+  on your platform, i.e. a path to a directory containing subdirectories named
+  for installed packages.
 
 ```cmake
 install(
   EXPORT ${PROJECT_NAME}_targets
   FILE ${PROJECT_NAME}-targets.cmake
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${FUTURE_INSTALL_EXPORTDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
+  DESTINATION "${FUTURE_INSTALL_CONFIGDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
 )
 ```
 

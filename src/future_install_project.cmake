@@ -5,7 +5,7 @@
 # https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/
 # https://cliutils.gitlab.io/modern-cmake/chapters/install/installing.html
 
-find_extension(FutureExportDir)
+find_extension(FutureInstallDirs)
 find_extension(future_export_sets)
 
 set(extension_dir "${CMAKE_CURRENT_LIST_DIR}")
@@ -46,13 +46,13 @@ function(future_install_project)
   # chosen by the user, and an intermediate "build" destination, in the build
   # directory (inappropriately named `CMAKE_BINARY_DIR`), where we assemble
   # files for installation.
-  set(cmake_build_exportdir "${CMAKE_BINARY_DIR}/${project_slug}")
+  set(package_configuration_directory "${CMAKE_BINARY_DIR}/${project_slug}")
 
   install(
     EXPORT ${FUTURE_DEFAULT_EXPORT_SET}
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
-    DESTINATION "${cmake_build_exportdir}"
+    DESTINATION "${package_configuration_directory}"
   )
 
   include(CMakePackageConfigHelpers)
@@ -60,18 +60,18 @@ function(future_install_project)
   get_property(dependencies GLOBAL PROPERTY FUTURE_PROJECT_DEPENDENCIES)
   configure_package_config_file(
     "${extension_dir}/package-config.cmake.in"
-    "${cmake_build_exportdir}/${PROJECT_NAME}-config.cmake"
-    INSTALL_DESTINATION "${FUTURE_INSTALL_EXPORTDIR}/${project_slug}"
+    "${package_configuration_directory}/${PROJECT_NAME}-config.cmake"
+    INSTALL_DESTINATION "${FUTURE_INSTALL_CONFIGDIR}/${project_slug}"
   )
 
   write_basic_package_version_file(
-    ${cmake_build_exportdir}/${PROJECT_NAME}-config-version.cmake
+    ${package_configuration_directory}/${PROJECT_NAME}-config-version.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
   )
 
   install(
-    DIRECTORY "${cmake_build_exportdir}"
-    DESTINATION "${FUTURE_INSTALL_EXPORTDIR}"
+    DIRECTORY "${package_configuration_directory}"
+    DESTINATION "${FUTURE_INSTALL_CONFIGDIR}"
   )
 endfunction()
