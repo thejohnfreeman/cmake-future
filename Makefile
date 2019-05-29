@@ -1,8 +1,10 @@
 # This Makefile exists just to assist development.
 # Do not treat it as a continuous integration test.
 
-build_dir := $(abspath .build)
-install_dir := $(abspath .install)
+BUILD_TYPE ?= Debug
+
+build_dir := $(abspath .build/${BUILD_TYPE})
+install_dir := $(abspath .install/${BUILD_TYPE})
 
 ${install_dir} :
 	umask 0022; mkdir --parents ${install_dir}/lib/cmake
