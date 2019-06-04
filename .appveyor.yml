@@ -13,8 +13,9 @@ environment:
 build: off
 
 install:
+  # Why can't we use "Stop" here?
   - ps: |
-      $ErrorActionPreference = "Stop"
+      $ErrorActionPreference = "Continue"
       $env:PATH = "$env:PYTHON;$env:PYTHON\Scripts;$env:PATH"
       pip --disable-pip-version-check install pip poetry
       poetry install
