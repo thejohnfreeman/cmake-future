@@ -42,21 +42,13 @@ def configure(ctx):
 @task(configure)
 def build(ctx):
     with ctx.cd(build_dir):
-        ctx.run(
-            f'cmake --build . --config {config} --parallel {ncpus}',
-            echo=True,
-            pty=pty
-        )
+        ctx.run(f'cmake --build . --config {config}', echo=True, pty=pty)
 
 
 @task(configure)
 def test(ctx):
     with ctx.cd(build_dir):
-        ctx.run(
-            f'ctest --build-config {config} --parallel {ncpus}',
-            echo=True,
-            pty=pty
-        )
+        ctx.run(f'ctest --build-config {config}', echo=True, pty=pty)
 
 
 @task(configure)
