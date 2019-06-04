@@ -58,26 +58,6 @@ install(
   DESTINATION "${FUTURE_INSTALL_PACKAGEDIR}"
 )
 
-# The same file, plus a line that finds the meta package, can serve as
-# a `CMakeLists.txt` for a project to test that our installation worked.
-string(
-  CONCAT text
-  "cmake_minimum_required(VERSION 3.0)\n"
-  "project(test LANGUAGES)\n"
-  "${text}"
-  "find_package(${PROJECT_NAME} ${PROJECT_VERSION} EXACT REQUIRED)\n"
-)
-file(WRITE "${CMAKE_BINARY_DIR}/test/CMakeLists.txt" "${text}")
-
 enable_testing()
 
-# Add a test that tries to import all of our extensions.
-add_test(
-  NAME find_packages
-  COMMAND
-    "${CMAKE_COMMAND}"
-    "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
-    .
-  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/test"
-)
+add_subdirectory(tests)

@@ -20,7 +20,7 @@ pty = sys.stdout.isatty()
 
 config = 'Debug'
 source_dir = os.getcwd()
-dependency_dir = os.path.abspath(os.environ['CMAKE_FUTURE_ROOT'])
+dependency_dirs = os.path.abspath(os.environ['CMAKE_PREFIX_PATH'])
 build_dir = os.path.abspath(f'.build/{config}')
 install_dir = os.path.abspath(f'.install/{config}')
 
@@ -33,7 +33,7 @@ def configure(ctx):
     os.makedirs(f'{install_dir}/lib/cmake', exist_ok=True)
     with ctx.cd(build_dir):
         ctx.run(
-            f'cmake -DCMAKE_PREFIX_PATH={dependency_dir} -DCMAKE_BUILD_TYPE={config} -DCMAKE_INSTALL_PREFIX={install_dir} {source_dir}',
+            f'cmake -DCMAKE_PREFIX_PATH={dependency_dirs} -DCMAKE_BUILD_TYPE={config} -DCMAKE_INSTALL_PREFIX={install_dir} {source_dir}',
             echo=True,
             pty=pty
         )
