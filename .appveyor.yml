@@ -17,6 +17,7 @@ install:
       $ErrorActionPreference = "Stop"
       $env:PATH = "$env:PYTHON;$env:PYTHON\Scripts;$env:PATH"
       pip --disable-pip-version-check install pip pipenv
+      $ErrorActionPreference = "Continue"
       pipenv install --dev
 
 configuration:
