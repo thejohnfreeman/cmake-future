@@ -1,5 +1,5 @@
-# 3.12 for --build --parallel.
-cmake_minimum_required(VERSION 3.12)
+# future_add_test_executable requires 3.7.
+cmake_minimum_required(VERSION 3.7)
 project(greetings VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)

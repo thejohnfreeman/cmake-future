@@ -1,3 +1,6 @@
+# 3.7 for fixtures.
+cmake_minimum_required(VERSION 3.7)
+
 # https://stackoverflow.com/a/56448477/618906
 function(future_add_test_executable target)
   add_executable(${target} ${ARGN})
