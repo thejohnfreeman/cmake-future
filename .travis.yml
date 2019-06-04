@@ -20,7 +20,7 @@ one-line: &one-line
 
 install:
   - pip3 install pipenv
-  - pipenv install
+  - pipenv install --dev
 
 matrix:
   include:
