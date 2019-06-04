@@ -1,3 +1,5 @@
+# We need `language: python` to get Travis CI to supply pip3.
+language: python
 sudo: required
 
 multi-line: &multi-line
