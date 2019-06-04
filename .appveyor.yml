@@ -2,20 +2,23 @@ environment:
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ARCH: x86
+      PYTHON: "C:\\Python36"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ARCH: x86_64
+      PYTHON: "C:\\Python36-x64"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       ARCH: x86
+      PYTHON: "C:\\Python36"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       ARCH: x86_64
+      PYTHON: "C:\\Python36-x64"
 
 # AppVeyor runs MSBuild by default, which fails if there is no project.
 build: off
 
 install:
-  # Why can't we use "Stop" here?
   - ps: |
-      $ErrorActionPreference = "Continue"
+      $ErrorActionPreference = "Stop"
       $env:PATH = "$env:PYTHON;$env:PYTHON\Scripts;$env:PATH"
       pip --disable-pip-version-check install pip poetry
       poetry install
