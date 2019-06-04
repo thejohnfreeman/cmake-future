@@ -53,13 +53,21 @@ set(
   "Absolute path corresponding to `FUTURE_INSTALL_PACKAGEDIR`."
 )
 
-if(UNIX AND NOT IS_DIRECTORY "${FUTURE_INSTALL_FULL_PACKAGEDIR}")
+# We only want to diagnose this problem once, not every time this module is
+# included. Use a global flag to track whether it has been diagnosed already.
+get_property(diagnosed GLOBAL PROPERTY FUTURE_INSTALL_PACKAGEDIR_DIAGNOSED)
+if(
+    NOT diagnosed
+    AND UNIX
+    AND NOT IS_DIRECTORY "${FUTURE_INSTALL_FULL_PACKAGEDIR}"
+)
   string(
     CONCAT msg
     "CMake package directory (${FUTURE_INSTALL_FULL_PACKAGEDIR}) does not exist.\n"
     "CMake will create it with your umask."
   )
   message(WARNING "${msg}")
+  set_property(GLOBAL PROPERTY FUTURE_INSTALL_PACKAGEDIR_DIAGNOSED TRUE)
 endif()
 
 # TODO: Should we just create the directory for them?
