@@ -178,8 +178,8 @@ future_add_test_executable(my_test EXCLUDE_FROM_ALL my_test.cpp)
 ```
 
 Like `add_executable` plus `add_test`, this will add an executable target
-called `<name>` as a test, but unlike `add_test`, it will add an additional
-"test" that rebuilds the target if its dependencies have changed. Inspired by
+called `<name>` as a test, but unlike `add_test`, it will add a test fixture
+that rebuilds the target if its dependencies have changed. Inspired by
 [this answer on Stack Overflow](https://stackoverflow.com/a/10824578/618906).
 With this, you will never run out-of-date tests. Remaining arguments are
 passed through to
