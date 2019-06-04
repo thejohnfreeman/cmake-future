@@ -31,6 +31,10 @@ matrix:
       dist: trusty
       script: *multi-line
     - os: osx
+      # `xcode10.2` has Python 3.7.3.
+      osx_image: xcode10.2
+      # `language: python` tries to install Python, which fails on OSX.
+      language: shell
       script: *multi-line
     - os: linux
       dist: xenial
@@ -39,4 +43,6 @@ matrix:
       dist: trusty
       script: *one-line
     - os: osx
+      osx_image: xcode10.2
+      language: shell
       script: *one-line
