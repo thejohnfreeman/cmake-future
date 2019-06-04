@@ -2,13 +2,17 @@
 language: python
 sudo: required
 
+install:
+  - pip3 install poetry
+  - poetry install
+
 multi-line: &multi-line
   - mkdir build
   - cd build
   - cmake ..
   # cmake is not on the sudo PATH.
   - sudo env "PATH=$PATH" cmake --build . --target install
-  - pipenv run ctest --verbose
+  - poetry run ctest --verbose
 
 one-line: &one-line
   - curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/${TRAVIS_COMMIT}/install.sh \
@@ -16,11 +20,7 @@ one-line: &one-line
   - mkdir build
   - cd build
   - cmake ..
-  - pipenv run ctest --verbose
-
-install:
-  - pip3 install pipenv
-  - pipenv install --dev
+  - poetry run ctest --verbose
 
 matrix:
   include:

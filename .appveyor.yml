@@ -16,9 +16,8 @@ install:
   - ps: |
       $ErrorActionPreference = "Stop"
       $env:PATH = "$env:PYTHON;$env:PYTHON\Scripts;$env:PATH"
-      pip --disable-pip-version-check install pip pipenv
-      $ErrorActionPreference = "Continue"
-      pipenv install --dev
+      pip --disable-pip-version-check install pip poetry
+      poetry install
 
 configuration:
   - MultiLine
@@ -32,7 +31,7 @@ build_script:
       mkdir build
       cd build
       cmake ..
-      pipenv run ctest --build-config Debug --verbose
+      poetry run ctest --build-config Debug --verbose
 
 for:
   - matrix:
@@ -45,4 +44,4 @@ for:
           cd build
           cmake ..
           cmake --build . --target install
-          pipenv run ctest --build-config Debug --verbose
+          poetry run ctest --build-config Debug --verbose
