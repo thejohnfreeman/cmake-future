@@ -9,18 +9,29 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       ARCH: x86_64
 
+# AppVeyor runs MSBuild by default, which fails if there is no project.
+build: off
+
+install:
+  - ps: |
+      $ErrorActionPreference = "Stop"
+      $env:PATH = "$env:PYTHON;$env:PYTHON\Scripts;$env:PATH"
+      pip --disable-pip-version-check install pip pipenv
+      pipenv install
+
 configuration:
   - MultiLine
   - OneLine
 
 build_script:
   - ps: |
+      $ErrorActionPreference = "Stop"
       Invoke-RestMethod https://raw.githubusercontent.com/thejohnfreeman/cmake-future/$env:APPVEYOR_REPO_COMMIT/install.ps `
         | powershell -Command "`$env:commit = '$env:APPVEYOR_REPO_COMMIT'; powershell -Command -"
       mkdir build
       cd build
       cmake ..
-      ctest --build-config Debug --verbose
+      pipenv run ctest --build-config Debug --verbose
 
 for:
   - matrix:
@@ -28,8 +39,9 @@ for:
         - configuration: MultiLine
     build_script:
       - ps: |
+          $ErrorActionPreference = "Stop"
           md build
           cd build
           cmake ..
           cmake --build . --target install
-          ctest --build-config Debug --verbose
+          pipenv run ctest --build-config Debug --verbose

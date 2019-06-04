@@ -6,7 +6,7 @@ multi-line: &multi-line
   - cmake ..
   # cmake is not on the sudo PATH.
   - sudo env "PATH=$PATH" cmake --build . --target install
-  - ctest --verbose
+  - pipenv run ctest --verbose
 
 one-line: &one-line
   - curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/${TRAVIS_COMMIT}/install.sh \
@@ -14,7 +14,11 @@ one-line: &one-line
   - mkdir build
   - cd build
   - cmake ..
-  - ctest --verbose
+  - pipenv run ctest --verbose
+
+install:
+  - pip3 install pipenv
+  - pipenv install
 
 matrix:
   include:
