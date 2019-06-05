@@ -1,19 +1,14 @@
+cmake_minimum_required(VERSION 3.11)
+
 # A function to make assertions more readable.
 function(assert variable)
   set(argn ${ARGN})
-
-  message("ARGC = ${ARGC}")
-  message("argn = ${argn}")
 
   # Subtract 1 to get the size of `ARGN`, then 1 more to get the operator
   # length (all but the expected value).
   math(EXPR oplen "${ARGC} - 1 - 1")
   list(SUBLIST argn 0 "${oplen}" operator)
   list(SUBLIST argn "${oplen}" -1 expected)
-
-  message("oplen = ${oplen}")
-  message("expected = ${expected}")
-  message("operator = ${operator}")
 
   # After this conditional, `maybe_not` has either "NOT" or "" and `operator`
   # has the rest of the operator that was passed to us.

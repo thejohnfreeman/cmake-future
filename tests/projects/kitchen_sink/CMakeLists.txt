@@ -4,7 +4,7 @@
 # is a great place to put it and test all the incidental interactions with
 # other modules and tests.
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.11)
 project(my_project VERSION 1.0)
 
 include(assert.cmake)

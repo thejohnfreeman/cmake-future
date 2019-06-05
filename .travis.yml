@@ -2,6 +2,11 @@
 language: python
 sudo: required
 
+addons:
+  apt:
+    packages:
+      - cmake
+
 install:
   - pip3 install poetry
   - poetry install
