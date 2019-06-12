@@ -1,5 +1,5 @@
-#ifndef PROJECT_TEMPLATE_H
-#define PROJECT_TEMPLATE_H
+#ifndef GREETINGS_H
+#define GREETINGS_H
 
 #include <string>
 
