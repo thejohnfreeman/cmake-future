@@ -2,7 +2,7 @@
 # 3.7 for fixtures.
 cmake_minimum_required(VERSION 3.7)
 # No languages, not even C/C++, the defaults.
-project(future VERSION 2.0.0 LANGUAGES)
+project(future VERSION 2.0.1 LANGUAGES)
 
 macro(find_extension name)
   include("${CMAKE_SOURCE_DIR}/src/${name}.cmake")
