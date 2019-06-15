@@ -13,7 +13,8 @@ endforeach()
 
 if(NOT TARGET @PROJECT_NAME@::@PROJECT_NAME@)
   include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
-  set(@PROJECT_NAME@_EXPORTS @exports@)
+  set(@PROJECT_NAME@_COMPONENTS @components@)
+  set(@PROJECT_NAME@_TARGETS @targets@)
 endif()
 
 message(STATUS "Found: @PROJECT_VERSION@ @PROJECT_NAME@")

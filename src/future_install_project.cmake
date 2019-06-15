@@ -58,10 +58,10 @@ function(future_install_project)
   include(CMakePackageConfigHelpers)
 
   get_property(dependencies GLOBAL PROPERTY FUTURE_PROJECT_DEPENDENCIES)
-  future_get_export_set(targets ${FUTURE_DEFAULT_EXPORT_SET})
+  future_get_export_set(components ${FUTURE_DEFAULT_EXPORT_SET})
   # list(TRANSFORM PREPEND) is in 3.11. Let's try to support 3.7 for now.
-  foreach(target ${targets})
-    set(exports ${exports} ${PROJECT_NAME}::${target})
+  foreach(target ${components})
+    set(targets ${targets} ${PROJECT_NAME}::${target})
   endforeach()
   configure_package_config_file(
     "${extension_dir}/package-config.cmake.in"
