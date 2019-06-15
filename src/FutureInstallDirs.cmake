@@ -58,6 +58,15 @@ set(
 get_property(diagnosed GLOBAL PROPERTY FUTURE_INSTALL_PACKAGEDIR_DIAGNOSED)
 if(
     NOT diagnosed
+    # We do not want to diagnose if Conan is installing the package.
+    # We trust that it knows what it is doing.
+    AND (NOT DEFINED ENV{CONAN_LOGGING_LEVEL})
+    # We do not want to diagnose if someone specifically tells us, through an
+    # environment variable, to be quiet.
+    AND (
+      NOT DEFINED ENV{FUTURE_WARN_PACKAGEDIR}
+      OR ENV{FUTURE_WARN_PACKAGEDIR}
+    )
     AND UNIX
     AND NOT IS_DIRECTORY "${FUTURE_INSTALL_FULL_PACKAGEDIR}"
 )
