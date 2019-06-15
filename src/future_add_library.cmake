@@ -1,4 +1,3 @@
-include(CMakeParseArguments)
 include(GNUInstallDirs)
 
 find_extension(future_export_sets)

@@ -5,6 +5,8 @@
 # https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/
 # https://cliutils.gitlab.io/modern-cmake/chapters/install/installing.html
 
+include(CMakeParseArguments)
+
 find_extension(FutureInstallDirs)
 find_extension(future_export_sets)
 

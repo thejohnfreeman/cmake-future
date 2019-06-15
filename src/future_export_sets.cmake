@@ -1,3 +1,5 @@
+include(CMakeParseArguments)
+
 set(FUTURE_DEFAULT_EXPORT_SET ${PROJECT_NAME}_targets)
 
 # Wrap the built-in `install` function to record exported targets.
