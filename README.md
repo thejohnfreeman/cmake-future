@@ -98,6 +98,31 @@ The section headings below link to their corresponding module file so that you
 can double-check its implementation.
 
 
+### [`future_project`](./src/future_project.cmake)
+
+```cmake
+future_project(LICENSE <license> [AUTHORS <author>...])
+```
+
+```cmake
+future_project(
+  LICENSE "ISC"
+  AUTHORS "John Freeman <jfreeman08@gmail.com>"
+)
+```
+
+Sets cache variables for common project metadata that is not set by
+[`project`][project]. These variables are used by my Conan
+[autorecipe][autorecipes] to set the corresponding attributes on the package.
+
+[project]: https://cmake.org/cmake/help/latest/command/project.html
+[autorecipes]: https://github.com/thejohnfreeman/autorecipes
+
+Because CMake requires the top-level `CMakeLists.txt` to contain a literal,
+direct call to the `project` command, no extension can substitute for it.
+Instead, this command complements it.
+
+
 ### [`future_export_sets`](./src/future_export_sets.cmake)
 
 ```cmake
