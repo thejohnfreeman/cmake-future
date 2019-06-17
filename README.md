@@ -1,5 +1,6 @@
 # cmake-future
 
+[![Bintray release](https://api.bintray.com/packages/jfreeman/jfreeman/future%3Ajfreeman/images/download.svg)](https://bintray.com/jfreeman/jfreeman/future%3Ajfreeman/_latestVersion)
 [![Travis: build on Linux and OSX](https://travis-ci.org/thejohnfreeman/cmake-future.svg?branch=master)](https://travis-ci.org/thejohnfreeman/cmake-future)
 [![AppVeyor: build on Windows](https://ci.appveyor.com/api/projects/status/github/thejohnfreeman/cmake-future?branch=master&svg=true)](https://ci.appveyor.com/project/thejohnfreeman/cmake-future)
 
