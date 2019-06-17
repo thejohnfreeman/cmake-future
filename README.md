@@ -17,6 +17,20 @@ you fix the version you want to install, which can be handy, e.g., in
 a continuous integration environment.
 
 
+### With [Conan][]
+
+[Conan]: https://docs.conan.io/
+
+```sh
+$ conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
+```
+
+```
+# conanfile.txt
+[build_requires]
+future/[*]@jfreeman/testing
+```
+
 ### Linux and OSX
 
 You'll need `sudo` to install these extensions in the right place. You can
@@ -66,6 +80,7 @@ set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 find_package(future CONFIG REQUIRED)
 ```
 
+You must place the import **after** the call to [`project`][].
 
 <a id="conventions" />
 
