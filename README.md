@@ -63,7 +63,7 @@ added to `find_package` [in CMake
 ```
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
-find_package(future)
+find_package(future CONFIG REQUIRED)
 ```
 
 
