@@ -2,6 +2,13 @@
 # 3.7 for fixtures.
 cmake_minimum_required(VERSION 3.7)
 
+project(future
+  VERSION 2.1.0
+  DESCRIPTION "A collection of CMake extensions."
+  HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
+  LANGUAGES NONE
+)
+
 macro(find_extension name)
   set(PACKAGE_FIND_NAME "${name}")
   include("${CMAKE_SOURCE_DIR}/src/${name}.cmake")
@@ -15,12 +22,6 @@ endmacro()
 find_extension(FutureInstallDirs)
 find_extension(future_project)
 
-project(future
-  VERSION 2.1.0
-  DESCRIPTION "A collection of CMake extensions."
-  HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
-  LANGUAGES NONE
-)
 future_project(
   LICENSE "ISC"
   AUTHORS "John Freeman <jfreeman08@gmail.com>"
