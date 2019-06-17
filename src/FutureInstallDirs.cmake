@@ -1,18 +1,28 @@
-if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  # Unless we join these into the same message, they get separated by a stack
-  # trace, which is a bad user experience.
-  set(
-    msg "CMAKE_INSTALL_PREFIX must be defined to use the ${PACKAGE_FIND_NAME} module.\n"
-  )
-  if(DEFINED CMAKE_SCRIPT_MODE_FILE)
+if(DEFINED CMAKE_INSTALL_PREFIX)
+  set(install_prefix "${CMAKE_INSTALL_PREFIX}")
+else()
+  # CMake says that the default value is "C:/Program Files/${PROJECT_NAME}" on
+  # Windows and "/usr/local" on Unix.
+  if(WIN32)
+    set(install_prefix "C:/Program Files/${PROJECT_NAME}")
+  elseif(UNIX)
+    set(install_prefix "/usr/local")
+  else()
+    # Unless we join these into the same message, they get separated by a stack
+    # trace, which is a bad user experience.
     set(
-      msg ${msg}
-      "NOTE: CMAKE_INSTALL_PREFIX is not defined by default when you run "
-      "CMake in script mode (-P)."
+      msg "CMAKE_INSTALL_PREFIX must be defined to use the ${PACKAGE_FIND_NAME} module.\n"
     )
+    if(DEFINED CMAKE_SCRIPT_MODE_FILE)
+      set(
+        msg ${msg}
+        "NOTE: CMAKE_INSTALL_PREFIX is not defined by default when you run "
+        "CMake in script mode (-P)."
+      )
+    endif()
+    message(SEND_ERROR ${msg})
+    return()
   endif()
-  message(SEND_ERROR ${msg})
-  return()
 endif()
 
 # Package configuration directories should be installed like any other file:
@@ -27,11 +37,11 @@ endif()
 # https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_PREFIX_PATH.html
 # TODO: In light of this, do we need this search at all? Right now it serves
 # as a sanity check.
-list(FIND CMAKE_SYSTEM_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}" INDEX)
+list(FIND CMAKE_SYSTEM_PREFIX_PATH "${install_prefix}" INDEX)
 if(INDEX LESS 0)
   message(WARNING
     " CMAKE_INSTALL_PREFIX not found in CMAKE_SYSTEM_PREFIX_PATH\n"
-    " CMAKE_INSTALL_PREFIX=\"${CMAKE_INSTALL_PREFIX}\"\n"
+    " CMAKE_INSTALL_PREFIX=\"${install_prefix}\"\n"
     " CMAKE_SYSTEM_PREFIX_PATH=\"${CMAKE_SYSTEM_PREFIX_PATH}\""
   )
 endif()
@@ -48,7 +58,7 @@ set(
 )
 set(
   FUTURE_INSTALL_FULL_PACKAGEDIR
-  "${CMAKE_INSTALL_PREFIX}/${FUTURE_INSTALL_PACKAGEDIR}"
+  "${install_prefix}/${FUTURE_INSTALL_PACKAGEDIR}"
   CACHE STRING
   "Absolute path corresponding to `FUTURE_INSTALL_PACKAGEDIR`."
 )
@@ -80,3 +90,5 @@ if(
 endif()
 
 # TODO: Should we just create the directory for them?
+
+unset(install_prefix)
