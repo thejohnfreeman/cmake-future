@@ -15,7 +15,12 @@ endmacro()
 find_extension(FutureInstallDirs)
 find_extension(future_project)
 
-project(future VERSION 2.1.0 LANGUAGES NONE)
+project(future
+  VERSION 2.1.0
+  DESCRIPTION "A collection of CMake extensions."
+  HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
+  LANGUAGES NONE
+)
 future_project(
   LICENSE "ISC"
   AUTHORS "John Freeman <jfreeman08@gmail.com>"
