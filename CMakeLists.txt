@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 project(future
-  VERSION 3.0.0
+  VERSION 3.0.1
   DESCRIPTION "A collection of CMake extensions."
   HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
   LANGUAGES NONE
