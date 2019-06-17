@@ -1,17 +1,10 @@
-# https://cliutils.gitlab.io/modern-cmake/chapters/intro/newcmake.html
+# https://cmake.org/cmake/help/latest/release/index.html
 # 3.7 for fixtures.
 cmake_minimum_required(VERSION 3.7)
-# No languages, not even C/C++, the defaults.
-project(future VERSION 2.1.0 LANGUAGES)
 
 macro(find_extension name)
   include("${CMAKE_SOURCE_DIR}/src/${name}.cmake")
 endmacro()
-
-add_subdirectory(src)
-# Use properties of targets instead of setting variables that cross scope
-# boundaries.
-get_target_property(package_names packages MANUALLY_ADDED_DEPENDENCIES)
 
 # We need to install our extensions as packages into a location searched by
 # `find_package`. The exact path depends on the platform. We use a switch on
@@ -19,6 +12,19 @@ get_target_property(package_names packages MANUALLY_ADDED_DEPENDENCIES)
 # fact, we package that switch as one of the extensions that we install, and
 # we just import it here.
 find_extension(FutureInstallDirs)
+find_extension(future_project)
+
+project(future VERSION 2.1.0 LANGUAGES NONE)
+future_project(
+  LICENSE "ISC"
+  AUTHORS "John Freeman <jfreeman08@gmail.com>"
+)
+
+add_subdirectory(src)
+
+# Use properties of targets instead of setting variables that cross scope
+# boundaries.
+get_target_property(package_names packages MANUALLY_ADDED_DEPENDENCIES)
 
 # Create a meta package named after this project that imports every extension
 # using `find_dependency`. We build a string that has a `find_dependency` line
