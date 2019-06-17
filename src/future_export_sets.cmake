@@ -1,6 +1,6 @@
 include(CMakeParseArguments)
 
-set(FUTURE_DEFAULT_EXPORT_SET ${PROJECT_NAME}_targets)
+set(FUTURE_PROJECT_EXPORT_SET ${PROJECT_NAME}_targets)
 
 # Wrap the built-in `install` function to record exported targets.
 function(future_install type)
@@ -21,7 +21,7 @@ endfunction()
 function(future_get_export_set variable)
   set(name "${ARGN}")
   if(NOT name)
-    set(name ${FUTURE_DEFAULT_EXPORT_SET})
+    set(name ${FUTURE_PROJECT_EXPORT_SET})
   endif()
   get_property(export_set GLOBAL PROPERTY FUTURE_EXPORT_SET_${name})
   set(${variable} "${export_set}" PARENT_SCOPE)

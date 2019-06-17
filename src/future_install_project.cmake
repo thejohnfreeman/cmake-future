@@ -51,7 +51,7 @@ function(future_install_project)
   set(package_configuration_directory "${CMAKE_BINARY_DIR}/${project_slug}")
 
   install(
-    EXPORT ${FUTURE_DEFAULT_EXPORT_SET}
+    EXPORT ${FUTURE_PROJECT_EXPORT_SET}
     FILE ${PROJECT_NAME}-targets.cmake
     NAMESPACE ${PROJECT_NAME}::
     DESTINATION "${package_configuration_directory}"
@@ -60,7 +60,7 @@ function(future_install_project)
   include(CMakePackageConfigHelpers)
 
   get_property(dependencies GLOBAL PROPERTY FUTURE_PROJECT_DEPENDENCIES)
-  future_get_export_set(components ${FUTURE_DEFAULT_EXPORT_SET})
+  future_get_export_set(components ${FUTURE_PROJECT_EXPORT_SET})
   # list(TRANSFORM PREPEND) is in 3.11. Let's try to support 3.7 for now.
   foreach(target ${components})
     set(targets ${targets} ${PROJECT_NAME}::${target})

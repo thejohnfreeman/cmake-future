@@ -103,8 +103,10 @@ sooner and helps experienced users avoid common pitfalls.
   `${PROJECT_NAME}::`. That way, target `b` that depends on target `a` can use
   the same syntax (`target_link_libraries(b project::a)`) whether `b` is in
   the same project or in another project.
-- All exported targets should be added to the **Default Export Set** called
-  `${PROJECT_NAME}_targets`.
+- All exported targets should be added to a **Project Export Set**. The exact
+  name of this export set does not matter, but it should be used consistently
+  throughout the project. These extensions use the variable
+  `FUTURE_PROJECT_EXPORT_SET` to hold the name.
 
 
 ## Modules
@@ -127,10 +129,9 @@ future_project(
 ```
 
 Sets cache variables for common project metadata that is not set by
-[`project`][project]. These variables are used by my Conan
-[autorecipe][autorecipes] to set the corresponding attributes on the package.
+[`project`][]. These variables are used by my Conan [autorecipe][autorecipes]
+to set the corresponding attributes on the package.
 
-[project]: https://cmake.org/cmake/help/latest/command/project.html
 [autorecipes]: https://github.com/thejohnfreeman/autorecipes
 
 Because CMake requires the top-level `CMakeLists.txt` to contain a literal,
@@ -141,19 +142,19 @@ Instead, this command complements it.
 ### [`future_export_sets`](./src/future_export_sets.cmake)
 
 ```cmake
-${FUTURE_DEFAULT_EXPORT_SET}
+${FUTURE_PROJECT_EXPORT_SET}
 future_install(...)
 future_get_export_set(<variable> [<name>])
 ```
 
 ```cmake
-future_get_export_set(export_set ${FUTURE_DEFAULT_EXPORT_SET})
+future_get_export_set(export_set ${FUTURE_PROJECT_EXPORT_SET})
 ```
 
 This extension exports a few pieces:
 
-- A variable `FUTURE_DEFAULT_EXPORT_SET` with the value
-  `${PROJECT_NAME}_targets`. The sibling extensions `future_add_headers` and
+- A variable `FUTURE_PROJECT_EXPORT_SET` for the name of the [Project Export
+  Set](#conventions). The sibling extensions `future_add_headers` and
   `future_add_library` will add their installed targets to this export set.
   The sibling extension `future_install_project` uses this export set for the
   package's [export
@@ -182,7 +183,7 @@ future_add_headers(${PROJECT_NAME}_headers DIRECTORY include)
 - Adds an `INTERFACE` library target called `<name>` for the headers in
   `DIRECTORY` (which defaults to `CMAKE_CURRENT_SOURCE_DIR`)
 - Aliases the library in the [Project Namespace](#conventions).
-- Adds the library to the [Default Export Set](#conventions).
+- Adds the library to the [Project Export Set](#conventions).
 - Installs the headers at `DESTINATION` (default
   [`CMAKE_INSTALL_INCLUDEDIR`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html#result-variables)).
 
@@ -201,7 +202,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC fmt::fmt)
 - Adds a library target called `<name>`, passing any remaining arguments to
   [`add_library`](https://cmake.org/cmake/help/latest/command/add_library.html).
 - Aliases the library in the [Project Namespace](#conventions).
-- Adds the library to the [Default Export Set](#conventions).
+- Adds the library to the [Project Export Set](#conventions).
 - Installs the library to destinations according to
   [`GNUInstallDirs`](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html).
 
@@ -291,7 +292,7 @@ where `<dir>` is one of:
 
 ```cmake
 install(
-  EXPORT ${PROJECT_NAME}_targets
+  EXPORT ${FUTURE_PROJECT_EXPORT_SET}
   FILE ${PROJECT_NAME}-targets.cmake
   NAMESPACE ${PROJECT_NAME}::
   DESTINATION "${FUTURE_INSTALL_PACKAGEDIR}/${PROJECT_NAME}-${PROJECT_VERSION}"
@@ -343,8 +344,8 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
 - You should add all your dependencies near the beginning of your top-level
   `CMakeLists.txt`, much like you where you would put `#include`s or `import`
   statements in a program, and for the same reasons. Before calling the next
-  and last function, remember to add any targets you want to the [Default
-  Export Set](#conventions) (`${PROJECT_NAME}_targets`).
+  and last function, remember to add any targets you want to the [Project
+  Export Set](#conventions).
 
 - `future_install_project` installs your project. It creates a [package
   configuration
@@ -354,4 +355,6 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
   (using the `SameMajorVersion` policy to approximate [semantic
   versioning](https://semver.org/)); and an [export
   file](https://cmake.org/cmake/help/latest/command/install.html#export) for
-  the Default Export Set (scoped to the [Project Namespace](#conventions)).
+  the Project Export Set (scoped to the [Project Namespace](#conventions)).
+
+[`project`]: https://cmake.org/cmake/help/latest/command/project.html

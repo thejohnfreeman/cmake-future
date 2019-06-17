@@ -23,5 +23,5 @@ future_install_project()
 future_get_targets(actual)
 assert(actual STREQUAL "my_lib_private;my_lib")
 
-future_get_export_set(actual ${FUTURE_DEFAULT_EXPORT_SET})
+future_get_export_set(actual ${FUTURE_PROJECT_EXPORT_SET})
 assert(actual STREQUAL "my_lib")

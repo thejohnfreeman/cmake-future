@@ -30,7 +30,7 @@ function(future_add_headers target)
       $<BUILD_INTERFACE:${arg_DIRECTORY}>
       $<INSTALL_INTERFACE:${arg_DESTINATION}>
   )
-  future_install(TARGETS ${target} EXPORT ${FUTURE_DEFAULT_EXPORT_SET})
+  future_install(TARGETS ${target} EXPORT ${FUTURE_PROJECT_EXPORT_SET})
   install(
     # This trailing slash ensures we install the contents of the directory,
     # not the directory itself.
