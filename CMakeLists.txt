@@ -3,6 +3,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 macro(find_extension name)
+  set(PACKAGE_FIND_NAME "${name}")
   include("${CMAKE_SOURCE_DIR}/src/${name}.cmake")
 endmacro()
 

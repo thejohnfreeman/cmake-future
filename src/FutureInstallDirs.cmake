@@ -2,7 +2,7 @@ if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   # Unless we join these into the same message, they get separated by a stack
   # trace, which is a bad user experience.
   set(
-    msg "CMAKE_INSTALL_PREFIX must be defined to use the ExportDir module.\n"
+    msg "CMAKE_INSTALL_PREFIX must be defined to use the ${PACKAGE_FIND_NAME} module.\n"
   )
   if(DEFINED CMAKE_SCRIPT_MODE_FILE)
     set(
