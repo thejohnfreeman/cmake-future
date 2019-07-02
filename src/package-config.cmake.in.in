@@ -11,10 +11,15 @@ foreach(package_name @dependencies@)
   find_dependency("${package_name}" REQUIRED)
 endforeach()
 
-if(NOT TARGET @PROJECT_NAME@::@PROJECT_NAME@)
-  include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
-  set(@PROJECT_NAME@_COMPONENTS @components@)
-  set(@PROJECT_NAME@_TARGETS @targets@)
-endif()
+include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
+set(@PROJECT_NAME@_COMPONENTS @components@)
+set(@PROJECT_NAME@_TARGETS @targets@)
+
+foreach(component @components@)
+  set(@PROJECT_NAME@_${component}_FOUND TRUE)
+endforeach()
+
+# This function sets `@PROJECT_NAME@_FOUND`.
+check_required_components(@PROJECT_NAME@)
 
 message(STATUS "Found: @PROJECT_VERSION@ @PROJECT_NAME@")

@@ -13,6 +13,10 @@ set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 find_package(future REQUIRED)
 
+if(NOT future_FOUND)
+  message(SEND_ERROR "`future_FOUND` is not truthy")
+endif()
+
 future_project(
   LICENSE ISC
   REPOSITORY_URL "https://example.com"
