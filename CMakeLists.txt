@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.7)
 project(future
   VERSION 3.1.0
   DESCRIPTION "A collection of CMake extensions."
-  HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
+  HOMEPAGE_URL "https://github.com/thejohnfreeman/cmake-future"
   LANGUAGES NONE
 )
 
@@ -24,6 +24,7 @@ find_extension(future_project)
 
 future_project(
   LICENSE "ISC"
+  REPOSITORY_URL "https://github.com/thejohnfreeman/cmake-future.git"
   AUTHORS "John Freeman <jfreeman08@gmail.com>"
 )
 

@@ -13,6 +13,22 @@ set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 find_package(future REQUIRED)
 
+future_project(
+  LICENSE ISC
+  REPOSITORY_URL "https://example.com"
+  AUTHORS "John Freeman <jfreeman08@gmail.com>"
+)
+
+if(NOT my_project_FOUND)
+  message(SEND_ERROR "`my_project_FOUND` is not truthy")
+endif()
+assert(PROJECT_LICENSE STREQUAL ISC)
+assert(CMAKE_PROJECT_LICENSE STREQUAL ISC)
+assert(PROJECT_REPOSITORY_URL STREQUAL "https://example.com")
+assert(CMAKE_PROJECT_REPOSITORY_URL STREQUAL "https://example.com")
+assert(PROJECT_AUTHORS STREQUAL "John Freeman <jfreeman08@gmail.com>")
+assert(CMAKE_PROJECT_AUTHORS STREQUAL "John Freeman <jfreeman08@gmail.com>")
+
 add_library(my_lib_private INTERFACE)
 future_add_library(my_lib INTERFACE)
 

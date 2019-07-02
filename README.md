@@ -119,19 +119,44 @@ can double-check its implementation.
 ### [`future_project`](./src/future_project.cmake)
 
 ```cmake
-future_project(LICENSE <license> [AUTHORS <author>...])
+future_project(LICENSE <license> [REPOSITORY_URL <url>] [AUTHORS <author>...])
 ```
 
 ```cmake
 future_project(
   LICENSE "ISC"
+  REPOSITORY_URL "https://github.com/thejohnfreeman/cmake-future.git"
   AUTHORS "John Freeman <jfreeman08@gmail.com>"
 )
 ```
 
-Sets cache variables for common project metadata that is not set by
-[`project`][]. These variables are used by my Conan [autorecipe][autorecipes]
-to set the corresponding attributes on the package.
+`future_project` sets variables for common project metadata that are not set
+by [`project`][]:
+
+- `${PROJECT_NAME}_FOUND`
+- `PROJECT_LICENSE`
+- `PROJECT_REPOSITORY_URL`
+- `PROJECT_AUTHORS`
+
+`${PROJECT_NAME}_FOUND` helps to short-circuit calls to `find_package` or
+[`future_add_dependency`](#install-project) in subprojects looking for this
+project. Think examples.
+Examples should be their own `project`s so that they can be compiled both as
+part of the main project and separately, to test the packaging and
+installation of the main project.
+A call to `find_package` or `future_add_dependency` in an example should
+short-circuit when compiled as part of the main project, but search when
+compiled separately.
+
+If called from the top-level project, `future_project` sets these `CACHE`
+variables:
+
+- `CMAKE_PROJECT_LICENSE`
+- `CMAKE_PROJECT_REPOSITORY_URL`
+- `CMAKE_PROJECT_AUTHORS`
+
+These variables are used by my Conan [autorecipe][autorecipes] to set the
+corresponding attributes on the package.
 
 [autorecipes]: https://github.com/thejohnfreeman/autorecipes
 
@@ -304,6 +329,7 @@ install(
 exports](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Developers/#Install-and-Export-the-Target).)
 
 
+<a id="install-project" name="install-project"></a>
 ### [`future_install_project`](./src/future_install_project.cmake)
 
 ```cmake
@@ -357,5 +383,6 @@ CMake](https://unclejimbo.github.io/2018/06/08/Modern-CMake-for-Library-Develope
   versioning](https://semver.org/)); and an [export
   file](https://cmake.org/cmake/help/latest/command/install.html#export) for
   the Project Export Set (scoped to the [Project Namespace](#conventions)).
+
 
 [`project`]: https://cmake.org/cmake/help/latest/command/project.html

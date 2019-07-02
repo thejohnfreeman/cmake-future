@@ -12,9 +12,13 @@ find_extension(future_export_sets)
 
 set(extension_dir "${CMAKE_CURRENT_LIST_DIR}")
 
-# TODO: Remember the arguments passed to `future_add_dependency` and pass them to
-# `find_dependency` in the package configuration file.
+# TODO: Remember the arguments passed to `future_add_dependency` and pass them
+# to `find_dependency` in the package configuration file.
 function(future_add_dependency scope package_name)
+  if(${package_name}_FOUND)
+    return()
+  endif()
+
   # cmake_parse_arguments(prefix options one_value multi_value args...)
   cmake_parse_arguments(arg "OPTIONAL;REQUIRED" "" "" ${ARGN})
 
