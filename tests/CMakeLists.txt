@@ -14,7 +14,11 @@ set(install_dir "${CMAKE_CURRENT_BINARY_DIR}/prefix")
 # whenever the project is configured, we need to use fixtures.
 
 add_custom_command(
-  OUTPUT "${install_dir}"
+  # We want a command that always runs. We could set it as the `COMMAND` of
+  # a custom target, but if we want to run multiple commands, then we must
+  # group them under a custom command. To get a custom command to run always,
+  # it must have a non-existent `OUTPUT`.
+  OUTPUT test_installation
   # Our installation expects this directory to exist.
   COMMAND "${CMAKE_COMMAND}" -E make_directory "${install_dir}/lib/cmake"
   COMMAND "${CMAKE_COMMAND}"
@@ -23,7 +27,7 @@ add_custom_command(
   COMMAND "${CMAKE_COMMAND}" --build . --target install
   WORKING_DIRECTORY "${build_dir}"
 )
-add_custom_target(test_install DEPENDS "${install_dir}")
+add_custom_target(test_install DEPENDS test_installation)
 
 add_test(
   NAME test_install
