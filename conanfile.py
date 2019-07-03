@@ -4,8 +4,8 @@ CMakeConanFile = python_requires('autorecipes/[*]@jfreeman/testing').cmake()
 
 
 class Recipe(CMakeConanFile):
-    name = CMakeConanFile.name
-    version = CMakeConanFile.version
+    name = CMakeConanFile.__dict__['name']
+    version = CMakeConanFile.__dict__['version']
     settings = None
 
     def package_id(self):
