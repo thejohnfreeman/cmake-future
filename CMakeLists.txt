@@ -30,8 +30,15 @@ future_project(
 
 add_subdirectory(src)
 
-# Use properties of targets instead of setting variables that cross scope
-# boundaries.
+enable_testing()
+add_subdirectory(tests)
+
+# ============
+# INSTALLATION
+# ============
+
+# The `packages` target is defined in the `src` directory.
+# It communicates the names of the component modules with this property.
 get_target_property(package_names packages MANUALLY_ADDED_DEPENDENCIES)
 
 # Create a meta package named after this project that imports every extension
@@ -72,7 +79,3 @@ install(
   DIRECTORY "${package_configuration_directory}"
   DESTINATION "${FUTURE_INSTALL_PACKAGEDIR}"
 )
-
-enable_testing()
-
-add_subdirectory(tests)
